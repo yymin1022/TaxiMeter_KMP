@@ -4,7 +4,7 @@ import android.app.Application
 import com.yong.taximeter.di.appModule
 import org.koin.core.context.startKoin
 
-class TaxiMeterApplicaiton: Application() {
+class TaxiMeterApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
