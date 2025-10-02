@@ -43,6 +43,10 @@ kotlin {
             val koinVersion = "4.1.1"
             implementation("io.insert-koin:koin-core:$koinVersion")
             implementation("io.insert-koin:koin-compose:$koinVersion")
+
+            // Voyager Navigator Dependency
+            val voyagerVersion = "1.0.1"
+            implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
