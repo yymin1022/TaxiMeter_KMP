@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 
-object SettingScreen: Screen{
+object SettingScreen: Screen {
     @Composable
     override fun Content() {
         Box(
