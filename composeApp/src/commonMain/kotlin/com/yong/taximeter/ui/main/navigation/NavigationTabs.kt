@@ -15,23 +15,6 @@ import com.yong.taximeter.ui.main.subscreen.setting.SettingScreen
 import com.yong.taximeter.ui.main.subscreen.store.StoreScreen
 
 /**
- * Home Screen Tab
- */
-internal object HomeTab: Tab {
-    override val options: TabOptions
-        @Composable
-        get() {
-            val icon = rememberVectorPainter(Icons.Default.Home)
-            return remember { TabOptions(index = 0u, title = "Home", icon = icon) }
-        }
-
-    @Composable
-    override fun Content() {
-        Navigator(screen = HomeScreen)
-    }
-}
-
-/**
  * Setting Screen Tab
  */
 internal object SettingTab : Tab {
@@ -45,6 +28,23 @@ internal object SettingTab : Tab {
     @Composable
     override fun Content() {
         Navigator(screen = SettingScreen)
+    }
+}
+
+/**
+ * Home Screen Tab
+ */
+internal object HomeTab: Tab {
+    override val options: TabOptions
+        @Composable
+        get() {
+            val icon = rememberVectorPainter(Icons.Default.Home)
+            return remember { TabOptions(index = 0u, title = "Home", icon = icon) }
+        }
+
+    @Composable
+    override fun Content() {
+        Navigator(screen = HomeScreen)
     }
 }
 
