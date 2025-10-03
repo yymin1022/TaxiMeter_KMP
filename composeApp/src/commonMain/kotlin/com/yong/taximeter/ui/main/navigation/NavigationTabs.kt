@@ -13,6 +13,11 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.yong.taximeter.ui.main.subscreen.home.HomeScreen
 import com.yong.taximeter.ui.main.subscreen.setting.SettingScreen
 import com.yong.taximeter.ui.main.subscreen.store.StoreScreen
+import org.jetbrains.compose.resources.stringResource
+import taximeter.composeapp.generated.resources.Res
+import taximeter.composeapp.generated.resources.tab_title_home
+import taximeter.composeapp.generated.resources.tab_title_setting
+import taximeter.composeapp.generated.resources.tab_title_store
 
 /**
  * Setting Screen Tab
@@ -22,12 +27,22 @@ internal object SettingTab : Tab {
         @Composable
         get() {
             val icon = rememberVectorPainter(Icons.Default.Settings)
-            return remember { TabOptions(index = 1u, title = "Setting", icon = icon) }
+            val title = stringResource(Res.string.tab_title_setting)
+
+            return remember {
+                TabOptions(
+                    index = 0u,
+                    title = title,
+                    icon = icon
+                )
+            }
         }
 
     @Composable
     override fun Content() {
-        Navigator(screen = SettingScreen)
+        Navigator(
+            screen = SettingScreen
+        )
     }
 }
 
@@ -39,12 +54,22 @@ internal object HomeTab: Tab {
         @Composable
         get() {
             val icon = rememberVectorPainter(Icons.Default.Home)
-            return remember { TabOptions(index = 0u, title = "Home", icon = icon) }
+            val title = stringResource(Res.string.tab_title_home)
+
+            return remember {
+                TabOptions(
+                    index = 1u,
+                    title = title,
+                    icon = icon
+                )
+            }
         }
 
     @Composable
     override fun Content() {
-        Navigator(screen = HomeScreen)
+        Navigator(
+            screen = HomeScreen
+        )
     }
 }
 
@@ -56,11 +81,21 @@ internal object StoreTab : Tab {
         @Composable
         get() {
             val icon = rememberVectorPainter(Icons.Default.ShoppingCart)
-            return remember { TabOptions(index = 2u, title = "Store", icon = icon) }
+            val title = stringResource(Res.string.tab_title_store)
+
+            return remember {
+                TabOptions(
+                    index = 2u,
+                    title = title,
+                    icon = icon
+                )
+            }
         }
 
     @Composable
     override fun Content() {
-        Navigator(screen = StoreScreen)
+        Navigator(
+            screen = StoreScreen
+        )
     }
 }
