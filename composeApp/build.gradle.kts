@@ -33,6 +33,7 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -46,9 +47,10 @@ kotlin {
 
             // Voyager Navigator Dependency
             val voyagerVersion = "1.0.1"
+            implementation("cafe.adriel.voyager:voyager-koin:${voyagerVersion}")
             implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
-            implementation("cafe.adriel.voyager:voyager-koin:$voyagerVersion")
             implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
+            implementation("cafe.adriel.voyager:voyager-tab-navigator:${voyagerVersion}")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
