@@ -1,4 +1,4 @@
-package com.yong.taximeter.ui.main.subpage.setting
+package com.yong.taximeter.ui.main.subscreen.setting
 
 import cafe.adriel.voyager.core.model.ScreenModel
 

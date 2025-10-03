@@ -1,4 +1,4 @@
-package com.yong.taximeter.ui.main.subpage.setting
+package com.yong.taximeter.ui.main.subscreen.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,15 +7,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
 
-object SettingScreen: Screen{
+object HomeScreen: Screen {
     @Composable
     override fun Content() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            // TODO: Setting UI 구현
-            Text("Setting Screen")
+            // TODO: Home UI 구현
+            Text("Home Screen")
         }
     }
 }

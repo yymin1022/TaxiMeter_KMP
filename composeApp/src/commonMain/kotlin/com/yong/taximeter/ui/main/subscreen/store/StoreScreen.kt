@@ -1,4 +1,4 @@
-package com.yong.taximeter.ui.main.subpage.store
+package com.yong.taximeter.ui.main.subscreen.store
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
