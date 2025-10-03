@@ -14,7 +14,7 @@ object MeterScreen: Screen {
         val viewModel: MeterViewModel = getScreenModel()
 
         Box(
-            modifier = Modifier.Companion
+            modifier = Modifier
                 .fillMaxSize()
         ) {
             // TODO: Meter UI 구현
