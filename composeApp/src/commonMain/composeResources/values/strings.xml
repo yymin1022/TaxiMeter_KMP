@@ -1,0 +1,9 @@
+<resources>
+    <!-- Common -->
+    <string name="app_name">Taxi Meter</string>
+
+    <!-- Main Tab Title -->
+    <string name="tab_title_home">Home</string>
+    <string name="tab_title_setting">Setting</string>
+    <string name="tab_title_store">Store</string>
+</resources>
