@@ -47,6 +47,8 @@ kotlin {
             // Voyager Navigator Dependency
             val voyagerVersion = "1.0.1"
             implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+            implementation("cafe.adriel.voyager:voyager-koin:$voyagerVersion")
+            implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
