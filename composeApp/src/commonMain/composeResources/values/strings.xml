@@ -6,4 +6,8 @@
     <string name="tab_title_home">Home</string>
     <string name="tab_title_setting">Setting</string>
     <string name="tab_title_store">Store</string>
+
+    <!-- Main Home Title -->
+    <string name="home_title_1">Taxi</string>
+    <string name="home_title_2">Meter</string>
 </resources>
