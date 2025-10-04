@@ -1,6 +1,7 @@
 package com.yong.taximeter.ui.main.subscreen.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import com.yong.taximeter.ui.meter.MeterScreen
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
 import taximeter.composeapp.generated.resources.home_description_default
@@ -30,6 +33,9 @@ import taximeter.composeapp.generated.resources.home_title_2
 object HomeScreen: Screen {
     @Composable
     override fun Content() {
+        val rootNavigator = LocalNavigator.current?.parent ?: return
+        val navigateToMeter = { rootNavigator.push(MeterScreen) }
+
         val viewModel: HomeViewModel = getScreenModel()
         val uiState = viewModel.uiState.collectAsState()
 
@@ -40,7 +46,8 @@ object HomeScreen: Screen {
         HomeScreenInternal(
             modifier = Modifier
                 .fillMaxSize(),
-            uiState = uiState.value
+            uiState = uiState.value,
+            onClick = navigateToMeter,
         )
     }
 
@@ -48,10 +55,12 @@ object HomeScreen: Screen {
     private fun HomeScreenInternal(
         modifier: Modifier = Modifier,
         uiState: HomeUiState,
+        onClick: () -> Unit,
     ) {
         // 전체 UI를 Column으로 배치
         Column(
-            modifier = modifier,
+            modifier = modifier
+                .clickable(onClick = onClick),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
