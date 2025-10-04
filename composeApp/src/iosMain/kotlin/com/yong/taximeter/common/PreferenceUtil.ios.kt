@@ -1,21 +1,28 @@
 package com.yong.taximeter.common
 
+import platform.Foundation.NSUserDefaults
+import platform.Foundation.setValue
+
 actual class PreferenceManager {
+    private val userDefaults = NSUserDefaults.standardUserDefaults
+
     actual suspend fun getString(key: String, defaultValue: String): String {
-        // TODO: String Get 로직 구현
-        return defaultValue
+        return userDefaults.stringForKey(key) ?: defaultValue
     }
 
     actual suspend fun putString(key: String, value: String) {
-        // TODO: String Put 로직 구현
+        userDefaults.setValue(value, forKey = key)
     }
 
     actual suspend fun getInt(key: String, defaultValue: Int): Int {
-        // TODO: Int Get 로직 구현
-        return defaultValue
+        return if (userDefaults.objectForKey(key) != null) {
+            userDefaults.integerForKey(key).toInt()
+        } else {
+            defaultValue
+        }
     }
 
     actual suspend fun putInt(key: String, value: Int) {
-        // TODO: Int Put 로직 구현
+        userDefaults.setInteger(value.toLong(), forKey = key)
     }
 }
