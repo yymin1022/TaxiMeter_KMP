@@ -4,6 +4,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 object PreferenceUtil: KoinComponent {
+    const val KEY_HISTORY_DISTANCE = "KEY_HISTORY_DISTANCE"
+
     private val manager: PreferenceManager by inject()
 
     suspend fun getString(key: String, defaultValue: String) = manager.getString(key, defaultValue)
