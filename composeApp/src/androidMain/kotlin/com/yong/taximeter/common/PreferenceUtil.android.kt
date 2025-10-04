@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore by preferencesDataStore("app_preferences")
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class PreferenceManager(private val context: Context) {
     actual suspend fun getString(key: String, defaultValue: String): String {
         return context.dataStore.data.map { preferences ->
