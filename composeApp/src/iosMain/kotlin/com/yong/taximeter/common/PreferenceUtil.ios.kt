@@ -3,6 +3,7 @@ package com.yong.taximeter.common
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.setValue
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual class PreferenceManager {
     private val userDefaults = NSUserDefaults.standardUserDefaults
 
