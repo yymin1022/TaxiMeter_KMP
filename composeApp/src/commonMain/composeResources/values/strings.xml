@@ -6,4 +6,12 @@
     <string name="tab_title_home">Home</string>
     <string name="tab_title_setting">Setting</string>
     <string name="tab_title_store">Store</string>
+
+    <!-- Main Home Title -->
+    <string name="home_title_1">Taxi</string>
+    <string name="home_title_2">Meter</string>
+
+    <!-- Main Home Title Description -->
+    <string name="home_description_default">Touch to Start</string>
+    <string name="home_description_distance">Drove for %1$dkm with TaxiMeter!</string>
 </resources>
