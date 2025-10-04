@@ -2,6 +2,8 @@ package com.yong.taximeter
 
 import android.app.Application
 import com.yong.taximeter.di.appModule
+import com.yong.taximeter.di.platformModule
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class TaxiMeterApplication: Application() {
@@ -10,7 +12,8 @@ class TaxiMeterApplication: Application() {
 
         startKoin {
             // Common App Module init
-            modules(appModule)
+            androidContext(this@TaxiMeterApplication)
+            modules(appModule, platformModule)
         }
     }
 }
