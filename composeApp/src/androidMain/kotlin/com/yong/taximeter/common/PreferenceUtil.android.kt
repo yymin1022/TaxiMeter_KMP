@@ -1,21 +1,37 @@
 package com.yong.taximeter.common
 
-actual class PreferenceManager {
+import android.content.Context
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+
+private val Context.dataStore by preferencesDataStore("app_preferences")
+
+actual class PreferenceManager(private val context: Context) {
     actual suspend fun getString(key: String, defaultValue: String): String {
-        // TODO: String Get 로직 구현
-        return defaultValue
+        return context.dataStore.data.map { preferences ->
+            preferences[stringPreferencesKey(key)] ?: defaultValue
+        }.first()
     }
 
     actual suspend fun putString(key: String, value: String) {
-        // TODO: String Put 로직 구현
+        context.dataStore.edit { preferences ->
+            preferences[stringPreferencesKey(key)] = value
+        }
     }
 
     actual suspend fun getInt(key: String, defaultValue: Int): Int {
-        // TODO: Int Get 로직 구현
-        return defaultValue
+        return context.dataStore.data.map { preferences ->
+            preferences[intPreferencesKey(key)] ?: defaultValue
+        }.first()
     }
 
     actual suspend fun putInt(key: String, value: Int) {
-        // TODO: Int Put 로직 구현
+        context.dataStore.edit { preferences ->
+            preferences[intPreferencesKey(key)] = value
+        }
     }
 }
