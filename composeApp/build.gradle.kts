@@ -28,6 +28,10 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+
+            // Datastore Preference
+            implementation(libs.androidx.datastore)
+            implementation(libs.androidx.datastore.preferences)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -51,10 +55,6 @@ kotlin {
             implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
             implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
             implementation("cafe.adriel.voyager:voyager-tab-navigator:${voyagerVersion}")
-
-            // Datastore Preference
-            implementation(libs.androidx.datastore)
-            implementation(libs.androidx.datastore.preferences)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
