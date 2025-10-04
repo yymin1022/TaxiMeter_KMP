@@ -10,6 +10,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocalTaxi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -20,6 +22,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
+import taximeter.composeapp.generated.resources.home_description_default
+import taximeter.composeapp.generated.resources.home_description_distance
 import taximeter.composeapp.generated.resources.home_title_1
 import taximeter.composeapp.generated.resources.home_title_2
 
@@ -27,19 +31,23 @@ object HomeScreen: Screen {
     @Composable
     override fun Content() {
         val viewModel: HomeViewModel = getScreenModel()
-        val uiState = viewModel.uiState.value
+        val uiState = viewModel.uiState.collectAsState()
+
+        LaunchedEffect(Unit) {
+            viewModel.updateDescriptionInfo()
+        }
 
         HomeScreenInternal(
             modifier = Modifier
                 .fillMaxSize(),
-            uiState = uiState
+            uiState = uiState.value
         )
     }
 
     @Composable
     private fun HomeScreenInternal(
         modifier: Modifier = Modifier,
-        uiState: HomeUiState
+        uiState: HomeUiState,
     ) {
         // 전체 UI를 Column으로 배치
         Column(
@@ -58,8 +66,12 @@ object HomeScreen: Screen {
             )
 
             // Description 영역
+            val distance = uiState.distance
+            val showDistanceForDescription = uiState.showDistanceForDescription
             HomeTitleDescription(
                 modifier = Modifier,
+                distance = distance,
+                showDistance = showDistanceForDescription,
             )
         }
     }
@@ -103,9 +115,20 @@ object HomeScreen: Screen {
 
     @Composable
     private fun HomeTitleDescription(
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
+        distance: Int = 0,
+        showDistance: Boolean = false,
     ) {
-        // TODO: Home Title Description 구현
-        Text("Home Title Description")
+        val descDefault = stringResource(Res.string.home_description_default)
+        val descWithDistance = stringResource(Res.string.home_description_distance, distance)
+
+        // showDistance Flag 상태에 따라 기본 메시지 또는 Distance 기반 메시지 표시
+        val descForUI = if(showDistance) descWithDistance else descDefault
+
+        Text(
+            modifier = modifier,
+            text = descForUI,
+            fontSize = 20.sp,
+        )
     }
 }
