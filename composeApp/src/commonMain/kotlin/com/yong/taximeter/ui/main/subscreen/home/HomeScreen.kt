@@ -1,13 +1,19 @@
 package com.yong.taximeter.ui.main.subscreen.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocalTaxi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 
@@ -54,10 +60,16 @@ object HomeScreen: Screen {
 
     @Composable
     private fun HomeIcon(
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
     ) {
-        // TODO: Home Icon 구현
-        Text("Home Icon")
+        val taxiIcon = rememberVectorPainter(Icons.Default.LocalTaxi)
+
+        Image(
+            modifier = modifier
+                .size(160.dp),
+            painter = taxiIcon,
+            contentDescription = null,
+        )
     }
 
     @Composable
