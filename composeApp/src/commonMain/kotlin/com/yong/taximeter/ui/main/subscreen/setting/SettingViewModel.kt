@@ -2,9 +2,10 @@ package com.yong.taximeter.ui.main.subscreen.setting
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.yong.taximeter.common.PreferenceUtil
-import com.yong.taximeter.common.PreferenceUtil.KEY_SETTING_LOCATION
-import com.yong.taximeter.common.PreferenceUtil.KEY_SETTING_THEME
+import com.yong.taximeter.common.util.CostUtil
+import com.yong.taximeter.common.util.PreferenceUtil
+import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_LOCATION
+import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_THEME
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
 import com.yong.taximeter.ui.main.subscreen.setting.model.ThemeSetting
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,8 @@ import kotlinx.coroutines.launch
 data class SettingUiState(
     val curSettingLocation: LocationSetting = LocationSetting.SEOUL,
     val curSettingTheme: ThemeSetting = ThemeSetting.HORSE,
+
+    val costDbVersion: String = "",
 )
 
 class SettingViewModel: ScreenModel {
@@ -22,6 +25,7 @@ class SettingViewModel: ScreenModel {
     val uiState = _uiState.asStateFlow()
 
     init {
+        getCostInfo()
         getCurrentSetting()
     }
 
@@ -36,6 +40,14 @@ class SettingViewModel: ScreenModel {
         screenModelScope.launch {
             PreferenceUtil.putString(KEY_SETTING_THEME, newTheme.key)
             _uiState.update { it.copy(curSettingTheme = newTheme) }
+        }
+    }
+
+    private fun getCostInfo() {
+        screenModelScope.launch {
+            // Cost DB Version
+            val costDbVersion = CostUtil.getCostDbVersion()
+            _uiState.update { it.copy(costDbVersion = costDbVersion) }
         }
     }
 
