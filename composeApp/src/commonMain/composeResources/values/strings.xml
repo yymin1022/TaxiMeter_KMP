@@ -33,4 +33,8 @@
     <string name="setting_item_location_chungbuk">Chungbuk</string>
     <string name="setting_item_location_chungnam">Chungnam</string>
     <string name="setting_item_location_custom">Custom</string>
+
+    <!-- Setting Item - Theme -->
+    <string name="setting_item_theme_circle">Circle</string>
+    <string name="setting_item_theme_horse">Horse</string>
 </resources>
