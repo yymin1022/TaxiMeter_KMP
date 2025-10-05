@@ -14,4 +14,23 @@
     <!-- Main Home Title Description -->
     <string name="home_description_default">Touch to Start</string>
     <string name="home_description_distance">Drove for %1$dkm with TaxiMeter!</string>
+
+    <!-- Setting Item - Location -->
+    <string name="setting_item_location_seoul">Seoul</string>
+    <string name="setting_item_location_gangwon">Gangwon</string>
+    <string name="setting_item_location_gyeonggi">Gyeonggi</string>
+    <string name="setting_item_location_gyeongbuk">Gyeongbuk</string>
+    <string name="setting_item_location_gyeongnam">Gyeongnam</string>
+    <string name="setting_item_location_gwangju">Gwangju</string>
+    <string name="setting_item_location_daegu">Daegu</string>
+    <string name="setting_item_location_daejeon">Daejeon</string>
+    <string name="setting_item_location_busan">Busan</string>
+    <string name="setting_item_location_ulsan">Ulsan</string>
+    <string name="setting_item_location_incheon">Incheon</string>
+    <string name="setting_item_location_jeonbuk">Jeonbuk</string>
+    <string name="setting_item_location_jeonnam">Jeonnam</string>
+    <string name="setting_item_location_jeju">Jeju</string>
+    <string name="setting_item_location_chungbuk">Chungbuk</string>
+    <string name="setting_item_location_chungnam">Chungnam</string>
+    <string name="setting_item_location_custom">Custom</string>
 </resources>
