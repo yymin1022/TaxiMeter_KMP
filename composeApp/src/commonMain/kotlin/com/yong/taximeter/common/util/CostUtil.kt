@@ -1,4 +1,4 @@
-package com.yong.taximeter.common
+package com.yong.taximeter.common.util
 
 object CostUtil {
     private const val PREF_KEY_COST_DB_VERSION = "PREF_KEY_COST_DB_VERSION"

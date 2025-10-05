@@ -1,4 +1,4 @@
-package com.yong.taximeter.common
+package com.yong.taximeter.common.util
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
