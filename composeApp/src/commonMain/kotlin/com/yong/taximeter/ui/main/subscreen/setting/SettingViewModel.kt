@@ -2,6 +2,7 @@ package com.yong.taximeter.ui.main.subscreen.setting
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.yong.taximeter.common.model.CostInfo
 import com.yong.taximeter.common.util.CostUtil
 import com.yong.taximeter.common.util.PreferenceUtil
 import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_LOCATION
@@ -18,6 +19,7 @@ data class SettingUiState(
     val curSettingTheme: ThemeSetting = ThemeSetting.HORSE,
 
     val costDbVersion: String = "",
+    val costInfo: CostInfo = CostInfo(),
 )
 
 class SettingViewModel: ScreenModel {
