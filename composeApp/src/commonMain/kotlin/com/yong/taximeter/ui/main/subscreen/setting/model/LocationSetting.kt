@@ -41,4 +41,10 @@ enum class LocationSetting(
     CHUNGBUK(Res.string.setting_item_location_chungbuk, "chungbuk"),
     CHUNGNAM(Res.string.setting_item_location_chungnam, "chungnam"),
     CUSTOM(Res.string.setting_item_location_custom, "custom");
+
+    companion object {
+        fun fromKey(key: String?): LocationSetting {
+            return entries.find { it.key == key } ?: SEOUL
+        }
+    }
 }

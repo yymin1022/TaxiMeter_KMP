@@ -10,5 +10,11 @@ enum class ThemeSetting(
     val key: String,
 ) {
     CIRCLE(Res.string.setting_item_theme_circle, "circle"),
-    HORSE(Res.string.setting_item_theme_horse, "horse"),
+    HORSE(Res.string.setting_item_theme_horse, "horse");
+
+    companion object {
+        fun fromKey(key: String?): ThemeSetting {
+            return entries.find { it.key == key } ?: HORSE
+        }
+    }
 }

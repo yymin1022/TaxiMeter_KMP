@@ -25,6 +25,20 @@ class SettingViewModel: ScreenModel {
         getCurrentSetting()
     }
 
+    fun updateLocationSetting(newLocation: LocationSetting) {
+        screenModelScope.launch {
+            PreferenceUtil.putString(KEY_SETTING_LOCATION, newLocation.key)
+            _uiState.update { it.copy(curSettingLocation = newLocation) }
+        }
+    }
+
+    fun updateThemeSetting(newTheme: ThemeSetting) {
+        screenModelScope.launch {
+            PreferenceUtil.putString(KEY_SETTING_THEME, newTheme.key)
+            _uiState.update { it.copy(curSettingTheme = newTheme) }
+        }
+    }
+
     private fun getCurrentSetting() {
         screenModelScope.launch {
             // Get current preference
@@ -32,8 +46,8 @@ class SettingViewModel: ScreenModel {
             val prefSettingTheme = PreferenceUtil.getString(KEY_SETTING_THEME, ThemeSetting.HORSE.key)
 
             // Convert preference string key to Enum
-            val curSettingLocation = LocationSetting.valueOf(prefSettingLocation)
-            val curSettingTheme = ThemeSetting.valueOf(prefSettingTheme)
+            val curSettingLocation = LocationSetting.fromKey(prefSettingLocation)
+            val curSettingTheme = ThemeSetting.fromKey(prefSettingTheme)
 
             // Update State
             _uiState.update {
