@@ -15,6 +15,10 @@
     <string name="home_description_default">Touch to Start</string>
     <string name="home_description_distance">Drove for %1$dkm with TaxiMeter!</string>
 
+    <!-- Setting Dialog Title -->
+    <string name="setting_dialog_title_location">Select Location</string>
+    <string name="setting_dialog_title_theme">Select Theme</string>
+
     <!-- Setting Group Title -->
     <string name="setting_group_meter_setting">Meter Setting</string>
     <string name="setting_group_meter_info">Meter Info</string>
