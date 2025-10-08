@@ -33,4 +33,30 @@ object CostUtil {
             false
         }
     }
+
+    /**
+     * Get latest Cost DB from server, and save as Preference
+     */
+    suspend fun updateCostInfo() {
+        try {
+            val costInfoDoc = firestore.collection("cost").document("info").get()
+            val dataList = costInfoDoc.get<List<Map<String, Any>>>("data")
+
+            dataList.forEach { cityData ->
+                val cityKey = cityData["city"] as String
+                val costDetails = cityData["data"] as Map<String, Long>
+
+                costDetails.forEach { (key, value) ->
+                    val prefKey = "pref_cost_${cityKey}_$key"
+                    PreferenceUtil.putInt(prefKey, value.toInt())
+                }
+            }
+
+            val remoteVersionDoc = firestore.collection("cost").document("version").get()
+            val remoteVersion = remoteVersionDoc.get<String>("data")
+            PreferenceUtil.putString(PREF_KEY_COST_DB_VERSION, remoteVersion)
+        } catch(e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }
