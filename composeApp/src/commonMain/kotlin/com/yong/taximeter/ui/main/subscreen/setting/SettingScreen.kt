@@ -135,6 +135,7 @@ object SettingScreen: Screen {
             modifier = modifier
                 .verticalScroll(scrollState),
         ) {
+            // Meter Setting
             SettingGroupTitle(
                 modifier = Modifier,
                 titleRes = Res.string.setting_group_meter_setting,
@@ -151,6 +152,8 @@ object SettingScreen: Screen {
                 descRes = settingItemThemeTitle,
                 onClick = { showThemeDialog = true },
             )
+
+            // Meter Info
             SettingGroupTitle(
                 modifier = Modifier,
                 titleRes = Res.string.setting_group_meter_info,
@@ -159,14 +162,14 @@ object SettingScreen: Screen {
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_cost_info,
                 desc = costInfoString,
-                onClick = {},
             )
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_cost_db_info,
                 desc = costDbVersion,
-                onClick = {},
             )
+
+            // Developer Info
             SettingGroupTitle(
                 modifier = Modifier,
                 titleRes = Res.string.setting_group_developer_info,
@@ -175,7 +178,6 @@ object SettingScreen: Screen {
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_developer,
                 descRes = Res.string.setting_item_desc_developer,
-                onClick = {},
             )
             SettingItem(
                 modifier = Modifier,
@@ -229,7 +231,7 @@ object SettingScreen: Screen {
         title: String? = null,
         descRes: StringResource? = null,
         desc: String? = null,
-        onClick: () -> Unit,
+        onClick: () -> Unit = {},
     ) {
         val titleForUI = (if(titleRes != null) stringResource(titleRes) else title) ?: ""
         val descForUI = (if(descRes != null) stringResource(descRes) else desc) ?: ""
