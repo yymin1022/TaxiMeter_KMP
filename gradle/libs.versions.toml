@@ -7,15 +7,28 @@ androidx-activity = "1.11.0"
 androidx-lifecycle = "2.9.4"
 composeMultiplatform = "1.9.0"
 datastore = "1.1.7"
+koinVersion = "4.1.1"
+firebaseVersion = "2.3.0"
 kotlin = "2.2.20"
+kotlinxSerializationJson = "1.9.0"
+voyagerVersion = "1.0.1"
 
 [libraries]
+firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "firebaseVersion" }
+firebase-firestore = { module = "dev.gitlive:firebase-firestore", version.ref = "firebaseVersion" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinVersion" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinVersion" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
 androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "datastore" }
 androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyagerVersion" }
+voyager-tab-navigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyagerVersion" }
+voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyagerVersion" }
+voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyagerVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

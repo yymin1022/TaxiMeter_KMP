@@ -45,24 +45,21 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+            implementation(libs.kotlinx.serialization.json)
 
             // Koin Dependency
-            val koinVersion = "4.1.1"
-            implementation("io.insert-koin:koin-core:$koinVersion")
-            implementation("io.insert-koin:koin-compose:$koinVersion")
+            implementation(libs.koin.core)
+            implementation(libs.koin.compose)
 
             // Voyager Navigator Dependency
-            val voyagerVersion = "1.0.1"
-            implementation("cafe.adriel.voyager:voyager-koin:${voyagerVersion}")
-            implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
-            implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
-            implementation("cafe.adriel.voyager:voyager-tab-navigator:${voyagerVersion}")
+            implementation(libs.voyager.koin)
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.screenmodel)
+            implementation(libs.voyager.tab.navigator)
 
             // Firebase
-            val firebaseVersion = "2.3.0"
-            implementation("dev.gitlive:firebase-firestore:$firebaseVersion")
-            implementation("dev.gitlive:firebase-common:$firebaseVersion")
+            implementation(libs.firebase.common)
+            implementation(libs.firebase.firestore)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
