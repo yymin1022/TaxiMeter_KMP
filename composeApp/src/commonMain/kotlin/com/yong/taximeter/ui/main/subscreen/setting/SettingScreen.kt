@@ -11,17 +11,24 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import com.yong.taximeter.ui.main.subscreen.setting.dialog.CommonRadioListDialog
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
 import com.yong.taximeter.ui.main.subscreen.setting.model.ThemeSetting
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
+import taximeter.composeapp.generated.resources.setting_dialog_title_location
+import taximeter.composeapp.generated.resources.setting_dialog_title_theme
 import taximeter.composeapp.generated.resources.setting_group_developer_info
 import taximeter.composeapp.generated.resources.setting_group_meter_info
 import taximeter.composeapp.generated.resources.setting_group_meter_setting
@@ -66,6 +73,8 @@ object SettingScreen: Screen {
         updateThemeSetting: (newTheme: ThemeSetting) -> Unit,
     ) {
         val scrollState = rememberScrollState()
+        var showLocationDialog by remember { mutableStateOf(false) }
+        var showThemeDialog by remember { mutableStateOf(false) }
 
         val settingItemLocationTitle = uiState.curSettingLocation.titleRes
         val settingItemThemeTitle = uiState.curSettingTheme.titleRes
@@ -102,6 +111,26 @@ object SettingScreen: Screen {
                 )
             }
 
+        LocationSettingDialog(
+            showDialog = showLocationDialog,
+            curSettingLocation = uiState.curSettingLocation,
+            updateLocationSetting = { idx ->
+                updateLocationSetting(idx)
+                showLocationDialog = false
+            },
+            onDismiss = { showLocationDialog = false }
+        )
+
+        ThemeSettingDialog(
+            showDialog = showThemeDialog,
+            curSettingTheme = uiState.curSettingTheme,
+            updateThemeSetting = { idx ->
+                updateThemeSetting(idx)
+                showThemeDialog = false
+            },
+            onDismiss = { showThemeDialog = false }
+        )
+
         Column(
             modifier = modifier
                 .verticalScroll(scrollState),
@@ -114,13 +143,13 @@ object SettingScreen: Screen {
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_location,
                 descRes = settingItemLocationTitle,
-                onClick = {},
+                onClick = { showLocationDialog = true },
             )
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_theme,
                 descRes = settingItemThemeTitle,
-                onClick = {},
+                onClick = { showThemeDialog = true },
             )
             SettingGroupTitle(
                 modifier = Modifier,
@@ -220,6 +249,52 @@ object SettingScreen: Screen {
                 text = descForUI,
                 color = Color.Black,
                 fontSize = 14.sp,
+            )
+        }
+    }
+
+    @Composable
+    private fun LocationSettingDialog(
+        showDialog: Boolean,
+        curSettingLocation: LocationSetting,
+        updateLocationSetting: (newLocation: LocationSetting) -> Unit,
+        onDismiss: () -> Unit
+    ) {
+        if(showDialog) {
+            val locationOptions = LocationSetting.entries
+
+            CommonRadioListDialog(
+                titleRes = Res.string.setting_dialog_title_location,
+                selectedIdx = locationOptions.indexOf(curSettingLocation),
+                itemList = locationOptions.map { stringResource(it.titleRes) },
+                onSelectItem = { index ->
+                    updateLocationSetting(locationOptions[index])
+                    onDismiss()
+                },
+                onCancel = onDismiss
+            )
+        }
+    }
+
+    @Composable
+    private fun ThemeSettingDialog(
+        showDialog: Boolean,
+        curSettingTheme: ThemeSetting,
+        updateThemeSetting: (newTheme: ThemeSetting) -> Unit,
+        onDismiss: () -> Unit
+    ) {
+        if(showDialog) {
+            val themeOptions = ThemeSetting.entries
+
+            CommonRadioListDialog(
+                titleRes = Res.string.setting_dialog_title_theme,
+                selectedIdx = themeOptions.indexOf(curSettingTheme),
+                itemList = themeOptions.map { stringResource(it.titleRes) },
+                onSelectItem = { index ->
+                    updateThemeSetting(themeOptions[index])
+                    onDismiss()
+                },
+                onCancel = onDismiss
             )
         }
     }
