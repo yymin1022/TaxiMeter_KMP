@@ -1,4 +1,4 @@
-package com.yong.taximeter.common
+package com.yong.taximeter.common.util
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

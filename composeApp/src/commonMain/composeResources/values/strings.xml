@@ -14,4 +14,53 @@
     <!-- Main Home Title Description -->
     <string name="home_description_default">Touch to Start</string>
     <string name="home_description_distance">Drove for %1$dkm with TaxiMeter!</string>
+
+    <!-- Setting Dialog Title -->
+    <string name="setting_dialog_title_location">Select Location</string>
+    <string name="setting_dialog_title_theme">Select Theme</string>
+
+    <!-- Setting Group Title -->
+    <string name="setting_group_meter_setting">Meter Setting</string>
+    <string name="setting_group_meter_info">Meter Info</string>
+    <string name="setting_group_developer_info">Developer Info</string>
+
+    <!-- Setting Item Title -->
+    <string name="setting_item_title_location">Location</string>
+    <string name="setting_item_title_theme">Theme</string>
+    <string name="setting_item_title_cost_info">Cost Info</string>
+    <string name="setting_item_title_cost_db_info">Cost DB Version</string>
+    <string name="setting_item_title_developer">Dev. LR</string>
+    <string name="setting_item_title_developer_blog">Developer's Blog</string>
+    <string name="setting_item_title_developer_github">Developer's GitHub</string>
+    <string name="setting_item_title_developer_instagram">Developer's Instagram</string>
+    <string name="setting_item_title_privacy_policy">Privacy Policy</string>
+
+    <!-- Setting Item Description -->
+    <string name="setting_item_desc_cost_info_type1">Base: KRW %1$d (First %2$dkm)\nCost per Distance: KRW 100 per %3$dm\nCost per Time: KRW 100 per %4$ds\nOutcity Percentage: %5$d%\nNight Percentage\n- %6$d% (%7$d:00 ~ %8$d:00)</string>
+    <string name="setting_item_desc_cost_info_type2">Base: KRW %1$d (First %2$dkm)\nCost per Distance: KRW 100 per %3$dm\nCost per Time: KRW 100 per %4$ds\nOutcity Percentage: %5$d%\nNight Percentage\n- %6$d% (%7$d:00 ~ %8$d:00)\n- %9$d% (%10$d:00 ~ %11$d:00)</string>
+
+    <string name="setting_item_desc_developer">Chung-Ang Univ. Computer Software Engineering (2019)</string>
+
+    <!-- Setting Item - Location -->
+    <string name="setting_item_location_seoul">Seoul</string>
+    <string name="setting_item_location_gangwon">Gangwon</string>
+    <string name="setting_item_location_gyeonggi">Gyeonggi</string>
+    <string name="setting_item_location_gyeongbuk">Gyeongbuk</string>
+    <string name="setting_item_location_gyeongnam">Gyeongnam</string>
+    <string name="setting_item_location_gwangju">Gwangju</string>
+    <string name="setting_item_location_daegu">Daegu</string>
+    <string name="setting_item_location_daejeon">Daejeon</string>
+    <string name="setting_item_location_busan">Busan</string>
+    <string name="setting_item_location_ulsan">Ulsan</string>
+    <string name="setting_item_location_incheon">Incheon</string>
+    <string name="setting_item_location_jeonbuk">Jeonbuk</string>
+    <string name="setting_item_location_jeonnam">Jeonnam</string>
+    <string name="setting_item_location_jeju">Jeju</string>
+    <string name="setting_item_location_chungbuk">Chungbuk</string>
+    <string name="setting_item_location_chungnam">Chungnam</string>
+    <string name="setting_item_location_custom">Custom</string>
+
+    <!-- Setting Item - Theme -->
+    <string name="setting_item_theme_circle">Circle</string>
+    <string name="setting_item_theme_horse">Horse</string>
 </resources>

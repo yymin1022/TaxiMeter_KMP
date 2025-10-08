@@ -2,8 +2,8 @@ package com.yong.taximeter.ui.main.subscreen.home
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.yong.taximeter.common.PreferenceUtil
-import com.yong.taximeter.common.PreferenceUtil.KEY_HISTORY_DISTANCE
+import com.yong.taximeter.common.util.PreferenceUtil
+import com.yong.taximeter.common.util.PreferenceUtil.KEY_HISTORY_DISTANCE
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

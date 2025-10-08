@@ -1,10 +1,12 @@
-package com.yong.taximeter.common
+package com.yong.taximeter.common.util
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 object PreferenceUtil: KoinComponent {
     const val KEY_HISTORY_DISTANCE = "KEY_HISTORY_DISTANCE"
+    const val KEY_SETTING_LOCATION = "KEY_SETTING_LOCATION"
+    const val KEY_SETTING_THEME = "KEY_SETTING_THEME"
 
     private val manager: PreferenceManager by inject()
 
