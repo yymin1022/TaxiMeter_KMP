@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import com.yong.taximeter.common.util.UrlUtil
 import com.yong.taximeter.ui.main.subscreen.setting.dialog.CommonRadioListDialog
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
 import com.yong.taximeter.ui.main.subscreen.setting.model.ThemeSetting
@@ -35,10 +36,6 @@ import taximeter.composeapp.generated.resources.setting_group_meter_setting
 import taximeter.composeapp.generated.resources.setting_item_desc_cost_info_type1
 import taximeter.composeapp.generated.resources.setting_item_desc_cost_info_type2
 import taximeter.composeapp.generated.resources.setting_item_desc_developer
-import taximeter.composeapp.generated.resources.setting_item_desc_developer_blog
-import taximeter.composeapp.generated.resources.setting_item_desc_developer_github
-import taximeter.composeapp.generated.resources.setting_item_desc_developer_instagram
-import taximeter.composeapp.generated.resources.setting_item_desc_privacy_policy
 import taximeter.composeapp.generated.resources.setting_item_title_cost_db_info
 import taximeter.composeapp.generated.resources.setting_item_title_cost_info
 import taximeter.composeapp.generated.resources.setting_item_title_developer
@@ -182,26 +179,26 @@ object SettingScreen: Screen {
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_developer_blog,
-                descRes = Res.string.setting_item_desc_developer_blog,
-                onClick = {},
+                desc = UrlUtil.URL_DEVELOPER_BLOG,
+                onClick = { UrlUtil.openUrl(UrlUtil.URL_DEVELOPER_BLOG) },
             )
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_developer_github,
-                descRes = Res.string.setting_item_desc_developer_github,
-                onClick = {},
+                desc = UrlUtil.URL_DEVELOPER_GITHUB,
+                onClick = { UrlUtil.openUrl(UrlUtil.URL_DEVELOPER_GITHUB) },
             )
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_developer_instagram,
-                descRes = Res.string.setting_item_desc_developer_instagram,
-                onClick = {},
+                desc = UrlUtil.URL_DEVELOPER_INSTAGRAM,
+                onClick = { UrlUtil.openUrl(UrlUtil.URL_DEVELOPER_INSTAGRAM) },
             )
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_privacy_policy,
-                descRes = Res.string.setting_item_desc_privacy_policy,
-                onClick = {},
+                desc = UrlUtil.URL_PRIVACY_POLICY,
+                onClick = { UrlUtil.openUrl(UrlUtil.URL_PRIVACY_POLICY) },
             )
         }
     }
