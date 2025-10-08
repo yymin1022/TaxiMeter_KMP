@@ -111,8 +111,8 @@ object SettingScreen: Screen {
         LocationSettingDialog(
             showDialog = showLocationDialog,
             curSettingLocation = uiState.curSettingLocation,
-            updateLocationSetting = { idx ->
-                updateLocationSetting(idx)
+            updateLocationSetting = { newLocation ->
+                updateLocationSetting(newLocation)
                 showLocationDialog = false
             },
             onDismiss = { showLocationDialog = false }
@@ -121,8 +121,8 @@ object SettingScreen: Screen {
         ThemeSettingDialog(
             showDialog = showThemeDialog,
             curSettingTheme = uiState.curSettingTheme,
-            updateThemeSetting = { idx ->
-                updateThemeSetting(idx)
+            updateThemeSetting = { newTheme ->
+                updateThemeSetting(newTheme)
                 showThemeDialog = false
             },
             onDismiss = { showThemeDialog = false }
