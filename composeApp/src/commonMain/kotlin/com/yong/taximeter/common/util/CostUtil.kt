@@ -11,7 +11,7 @@ object CostUtil {
 
     private const val DEFAULT_COST_DB_VERSION = "20001022"
 
-    private val firestore = Firebase.firestore
+    private val firestore by lazy { Firebase.firestore }
 
     /**
      * Get local Cost DB Version
