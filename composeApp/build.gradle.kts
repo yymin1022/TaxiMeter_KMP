@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
 
-    kotlin("plugin.serialization") version "1.9.0"
+    kotlin("plugin.serialization") version libs.versions.kotlin.get()
     id("com.google.gms.google-services")
 }
 
