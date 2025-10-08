@@ -5,6 +5,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 kotlin {
@@ -43,6 +45,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 
             // Koin Dependency
             val koinVersion = "4.1.1"
@@ -55,6 +58,11 @@ kotlin {
             implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
             implementation("cafe.adriel.voyager:voyager-screenmodel:$voyagerVersion")
             implementation("cafe.adriel.voyager:voyager-tab-navigator:${voyagerVersion}")
+
+            // Firebase
+            val firebaseVersion = "2.3.0"
+            implementation("dev.gitlive:firebase-firestore:$firebaseVersion")
+            implementation("dev.gitlive:firebase-common:$firebaseVersion")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
