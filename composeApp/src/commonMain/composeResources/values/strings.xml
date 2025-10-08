@@ -36,8 +36,8 @@
     <string name="setting_item_title_privacy_policy">Privacy Policy</string>
 
     <!-- Setting Item Description -->
-    <string name="setting_item_desc_cost_info_type1">Base: KRW %1$d (First %2$dkm)\nCost per Distance: KRW 100 per %3$dm\nCost per Time: KRW 100 per %4$ds\nOutcity Percentage: %5$d%\nNight Percentace\n- %6$d% (%7$d:00 ~ %8$d:00)</string>
-    <string name="setting_item_desc_cost_info_type2">Base: KRW %1$d (First %2$dkm)\nCost per Distance: KRW 100 per %3$dm\nCost per Time: KRW 100 per %4$ds\nOutcity Percentage: %5$d%\nNight Percentace\n- %6$d% (%7$d:00 ~ %8$d:00)\n- %9$d% (%10$d:00 ~ %11$d:00)</string>
+    <string name="setting_item_desc_cost_info_type1">Base: KRW %1$d (First %2$dkm)\nCost per Distance: KRW 100 per %3$dm\nCost per Time: KRW 100 per %4$ds\nOutcity Percentage: %5$d%\nNight Percentage\n- %6$d% (%7$d:00 ~ %8$d:00)</string>
+    <string name="setting_item_desc_cost_info_type2">Base: KRW %1$d (First %2$dkm)\nCost per Distance: KRW 100 per %3$dm\nCost per Time: KRW 100 per %4$ds\nOutcity Percentage: %5$d%\nNight Percentage\n- %6$d% (%7$d:00 ~ %8$d:00)\n- %9$d% (%10$d:00 ~ %11$d:00)</string>
 
     <string name="setting_item_desc_developer">Chung-Ang Univ. Computer Software Engineering (2019)</string>
 
