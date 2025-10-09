@@ -16,6 +16,7 @@ object PreferenceUtil: KoinComponent {
     suspend fun putInt(key: String, value: Int) = manager.putInt(key, value)
 }
 
+@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect class PreferenceManager {
     suspend fun getString(key: String, defaultValue: String): String
     suspend fun putString(key: String, value: String)
