@@ -33,29 +33,29 @@ class SettingViewModel: ScreenModel {
 
     private fun loadInitialData() {
         screenModelScope.launch {
-            val prefLocation = async {
+            val prefLocationDeferred = async {
                 PreferenceUtil.getString(KEY_SETTING_LOCATION, LocationSetting.SEOUL.key)
-            }.await()
-            val prefTheme = async {
+            }
+            val prefThemeDeferred = async {
                 PreferenceUtil.getString(KEY_SETTING_THEME, ThemeSetting.HORSE.key)
-            }.await()
+            }
 
-            val curLocation = LocationSetting.fromKey(prefLocation)
-            val curTheme = ThemeSetting.fromKey(prefTheme)
+            val curLocation = LocationSetting.fromKey(prefLocationDeferred.await())
+            val curTheme = ThemeSetting.fromKey(prefThemeDeferred.await())
 
-            val costDbVersion = async {
+            val costDbVersionDeferred = async {
                 CostUtil.getCostDbVersion()
-            }.await()
-            val costInfo = async {
+            }
+            val costInfoDeferred = async {
                 CostUtil.getCostForLocation(curLocation)
-            }.await()
+            }
 
             _uiState.update {
                 it.copy(
                     curSettingLocation = curLocation,
                     curSettingTheme = curTheme,
-                    costDbVersion = costDbVersion,
-                    costInfo = costInfo
+                    costDbVersion = costDbVersionDeferred.await(),
+                    costInfo = costInfoDeferred.await()
                 )
             }
         }
