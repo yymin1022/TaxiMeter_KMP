@@ -39,10 +39,6 @@ object HomeScreen: Screen {
         val viewModel: HomeViewModel = getScreenModel()
         val uiState = viewModel.uiState.collectAsState()
 
-        LaunchedEffect(Unit) {
-            viewModel.updateDescriptionInfo()
-        }
-
         HomeScreenInternal(
             modifier = Modifier
                 .fillMaxSize(),

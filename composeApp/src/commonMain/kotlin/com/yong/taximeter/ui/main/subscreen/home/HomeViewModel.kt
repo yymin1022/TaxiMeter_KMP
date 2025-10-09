@@ -27,9 +27,13 @@ class HomeViewModel: ScreenModel {
                 CostUtil.updateCostInfo()
             }
         }
+
+        screenModelScope.launch {
+            updateDescriptionInfo()
+        }
     }
 
-    fun updateDescriptionInfo() {
+    private fun updateDescriptionInfo() {
         screenModelScope.launch {
             val distance = PreferenceUtil.getInt(KEY_HISTORY_DISTANCE, 0)
             val showDistanceForDescription =
