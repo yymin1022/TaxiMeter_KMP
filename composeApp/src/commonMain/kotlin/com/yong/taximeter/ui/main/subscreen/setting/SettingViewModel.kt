@@ -9,6 +9,7 @@ import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_LOCATION
 import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_THEME
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
 import com.yong.taximeter.ui.main.subscreen.setting.model.ThemeSetting
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,14 +28,52 @@ class SettingViewModel: ScreenModel {
     val uiState = _uiState.asStateFlow()
 
     init {
-        getCostInfo()
-        getCurrentSetting()
+        loadInitialData()
+    }
+
+    private fun loadInitialData() {
+        screenModelScope.launch {
+            val prefLocationDeferred = async {
+                PreferenceUtil.getString(KEY_SETTING_LOCATION, LocationSetting.SEOUL.key)
+            }
+            val prefThemeDeferred = async {
+                PreferenceUtil.getString(KEY_SETTING_THEME, ThemeSetting.HORSE.key)
+            }
+
+            val curLocation = LocationSetting.fromKey(prefLocationDeferred.await())
+            val curTheme = ThemeSetting.fromKey(prefThemeDeferred.await())
+
+            val costDbVersionDeferred = async {
+                CostUtil.getCostDbVersion()
+            }
+            val costInfoDeferred = async {
+                CostUtil.getCostForLocation(curLocation)
+            }
+
+            _uiState.update {
+                it.copy(
+                    curSettingLocation = curLocation,
+                    curSettingTheme = curTheme,
+                    costDbVersion = costDbVersionDeferred.await(),
+                    costInfo = costInfoDeferred.await()
+                )
+            }
+        }
     }
 
     fun updateLocationSetting(newLocation: LocationSetting) {
         screenModelScope.launch {
+            // Get new cost info
+            val newCostInfo = CostUtil.getCostForLocation(newLocation)
+            // Set location preference
             PreferenceUtil.putString(KEY_SETTING_LOCATION, newLocation.key)
-            _uiState.update { it.copy(curSettingLocation = newLocation) }
+
+            _uiState.update {
+                it.copy(
+                    costInfo = newCostInfo,
+                    curSettingLocation = newLocation,
+                )
+            }
         }
     }
 
@@ -42,34 +81,6 @@ class SettingViewModel: ScreenModel {
         screenModelScope.launch {
             PreferenceUtil.putString(KEY_SETTING_THEME, newTheme.key)
             _uiState.update { it.copy(curSettingTheme = newTheme) }
-        }
-    }
-
-    private fun getCostInfo() {
-        screenModelScope.launch {
-            // Cost DB Version
-            val costDbVersion = CostUtil.getCostDbVersion()
-            _uiState.update { it.copy(costDbVersion = costDbVersion) }
-        }
-    }
-
-    private fun getCurrentSetting() {
-        screenModelScope.launch {
-            // Get current preference
-            val prefSettingLocation = PreferenceUtil.getString(KEY_SETTING_LOCATION, LocationSetting.SEOUL.key)
-            val prefSettingTheme = PreferenceUtil.getString(KEY_SETTING_THEME, ThemeSetting.HORSE.key)
-
-            // Convert preference string key to Enum
-            val curSettingLocation = LocationSetting.fromKey(prefSettingLocation)
-            val curSettingTheme = ThemeSetting.fromKey(prefSettingTheme)
-
-            // Update State
-            _uiState.update {
-                it.copy(
-                    curSettingLocation = curSettingLocation,
-                    curSettingTheme = curSettingTheme,
-                )
-            }
         }
     }
 }

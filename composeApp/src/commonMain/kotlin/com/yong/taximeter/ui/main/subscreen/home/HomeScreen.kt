@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocalTaxi
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,10 +37,6 @@ object HomeScreen: Screen {
 
         val viewModel: HomeViewModel = getScreenModel()
         val uiState = viewModel.uiState.collectAsState()
-
-        LaunchedEffect(Unit) {
-            viewModel.updateDescriptionInfo()
-        }
 
         HomeScreenInternal(
             modifier = Modifier
