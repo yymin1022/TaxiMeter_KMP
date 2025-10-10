@@ -8,6 +8,7 @@ plugins {
 
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
     id("com.google.gms.google-services")
+    alias(libs.plugins.kmp.secrets)
 }
 
 kotlin {
