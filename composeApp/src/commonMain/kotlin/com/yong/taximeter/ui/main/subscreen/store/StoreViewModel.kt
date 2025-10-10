@@ -10,7 +10,10 @@ import androidx.compose.material.icons.filled.MoneyOff
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.revenuecat.purchases.kmp.Purchases
+import com.revenuecat.purchases.kmp.ktx.awaitCustomerInfo
 import com.revenuecat.purchases.kmp.ktx.awaitOfferings
+import com.yong.taximeter.common.util.PreferenceUtil
+import com.yong.taximeter.common.util.PreferenceUtil.KEY_AD_REMOVAL
 import com.yong.taximeter.ui.main.subscreen.store.model.StoreProduct
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,6 +47,7 @@ class StoreViewModel: ScreenModel {
 
     init {
         loadDefaultOffers()
+        updateAdRemovalPref()
     }
 
     private fun loadDefaultOffers() {
@@ -69,6 +73,18 @@ class StoreViewModel: ScreenModel {
                         products = storeProducts,
                     )
                 }
+            } catch(e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun updateAdRemovalPref() {
+        screenModelScope.launch {
+            try {
+                val customerInfo = Purchases.sharedInstance.awaitCustomerInfo()
+                val isAdRemove = customerInfo.entitlements[SKU_ID_AD_REMOVE]?.isActive ?: false
+                PreferenceUtil.putBoolean(KEY_AD_REMOVAL, isAdRemove)
             } catch(e: Exception) {
                 e.printStackTrace()
             }
