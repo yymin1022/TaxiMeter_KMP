@@ -61,9 +61,18 @@ kotlin {
             // Firebase
             implementation(libs.firebase.common)
             implementation(libs.firebase.firestore)
+
+            // RevenueCat
+            implementation(libs.revenuecat.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        named { it.lowercase().startsWith("ios") }.configureEach {
+            languageSettings {
+                optIn("kotlinx.cinterop.ExperimentalForeignApi")
+            }
         }
     }
 }
