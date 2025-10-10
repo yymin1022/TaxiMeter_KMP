@@ -12,6 +12,9 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.revenuecat.purchases.kmp.Purchases
 import com.revenuecat.purchases.kmp.ktx.awaitCustomerInfo
 import com.revenuecat.purchases.kmp.ktx.awaitOfferings
+import com.revenuecat.purchases.kmp.ktx.awaitPurchase
+import com.revenuecat.purchases.kmp.ktx.awaitRestore
+import com.revenuecat.purchases.kmp.models.CustomerInfo
 import com.yong.taximeter.common.util.PreferenceUtil
 import com.yong.taximeter.common.util.PreferenceUtil.KEY_AD_REMOVAL
 import com.yong.taximeter.ui.main.subscreen.store.model.StoreProduct
@@ -73,6 +76,32 @@ class StoreViewModel: ScreenModel {
                         products = storeProducts,
                     )
                 }
+            } catch(e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun processPurchase(product: StoreProduct) {
+        screenModelScope.launch {
+            try {
+                val purchaseResult = Purchases.sharedInstance.awaitPurchase(product.rcPackage)
+
+                // TODO: 결제 완료 Feedback
+                updateAdRemovalPref()
+            } catch(e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun restorePurchases() {
+        screenModelScope.launch {
+            try {
+                val customerInfo: CustomerInfo = Purchases.sharedInstance.awaitRestore()
+
+                // TODO: 구매내역 복원 Feedback
+                updateAdRemovalPref()
             } catch(e: Exception) {
                 e.printStackTrace()
             }
