@@ -14,6 +14,8 @@ object PreferenceUtil: KoinComponent {
     suspend fun putString(key: String, value: String) = manager.putString(key, value)
     suspend fun getInt(key: String, defaultValue: Int) = manager.getInt(key, defaultValue)
     suspend fun putInt(key: String, value: Int) = manager.putInt(key, value)
+    suspend fun getBoolean(key: String, defaultValue: Boolean) = manager.getBoolean(key, defaultValue)
+    suspend fun putBoolean(key: String, value: Boolean) = manager.putBoolean(key, value)
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
@@ -23,4 +25,7 @@ expect class PreferenceManager {
 
     suspend fun getInt(key: String, defaultValue: Int): Int
     suspend fun putInt(key: String, value: Int)
+
+    suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean
+    suspend fun putBoolean(key: String, value: Boolean)
 }

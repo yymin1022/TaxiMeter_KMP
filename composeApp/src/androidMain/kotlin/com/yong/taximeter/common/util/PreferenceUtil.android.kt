@@ -1,6 +1,7 @@
 package com.yong.taximeter.common.util
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -33,6 +34,18 @@ actual class PreferenceManager(private val context: Context) {
     actual suspend fun putInt(key: String, value: Int) {
         context.dataStore.edit { preferences ->
             preferences[intPreferencesKey(key)] = value
+        }
+    }
+
+    actual suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return context.dataStore.data.map { preferences ->
+            preferences[booleanPreferencesKey(key)] ?: defaultValue
+        }.first()
+    }
+
+    actual suspend fun putBoolean(key: String, value: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[booleanPreferencesKey(key)] = value
         }
     }
 }
