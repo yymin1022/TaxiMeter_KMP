@@ -63,4 +63,8 @@
     <!-- Setting Item - Theme -->
     <string name="setting_item_theme_circle">Circle</string>
     <string name="setting_item_theme_horse">Horse</string>
+
+    <!-- Store -->
+    <string name="store_desc_text">Purchase Items except Advertise Remove are just donation for Developer. If you want to get refund, read Appstore Detail Page and send me an E-mail\n</string>
+    <string name="store_item_restore">Restore Purchases</string>
 </resources>
