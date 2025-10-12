@@ -22,10 +22,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.StringResource
+import taximeter.composeapp.generated.resources.Res
+import taximeter.composeapp.generated.resources.store_snackbar_purchase_done
+import taximeter.composeapp.generated.resources.store_snackbar_restore_done
 
 data class StoreUiState(
     val isLoading: Boolean = true,
     val products: List<StoreProduct> = emptyList(),
+    val snackBarMessageRes: StringResource? = null,
 )
 
 class StoreViewModel: ScreenModel {
@@ -50,7 +55,7 @@ class StoreViewModel: ScreenModel {
 
     init {
         loadDefaultOffers()
-        updateAdRemovalPref()
+        checkAndUpdateAdRemovalPref()
     }
 
     private fun loadDefaultOffers() {
@@ -86,9 +91,10 @@ class StoreViewModel: ScreenModel {
         screenModelScope.launch {
             try {
                 val purchaseResult = Purchases.sharedInstance.awaitPurchase(product.rcPackage)
-
-                // TODO: 결제 완료 Feedback
-                updateAdRemovalPref()
+                if(purchaseResult.storeTransaction.productIds.isNotEmpty()) {
+                    onPurchaseDone()
+                    checkAndUpdateAdRemovalPref()
+                }
             } catch(e: Exception) {
                 e.printStackTrace()
             }
@@ -99,16 +105,17 @@ class StoreViewModel: ScreenModel {
         screenModelScope.launch {
             try {
                 val customerInfo: CustomerInfo = Purchases.sharedInstance.awaitRestore()
-
-                // TODO: 구매내역 복원 Feedback
-                updateAdRemovalPref()
+                if(customerInfo.entitlements.active.isNotEmpty()) {
+                    onRestoreDone()
+                    checkAndUpdateAdRemovalPref()
+                }
             } catch(e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    private fun updateAdRemovalPref() {
+    private fun checkAndUpdateAdRemovalPref() {
         screenModelScope.launch {
             try {
                 val customerInfo = Purchases.sharedInstance.awaitCustomerInfo()
@@ -118,5 +125,25 @@ class StoreViewModel: ScreenModel {
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun onPurchaseDone() {
+        _uiState.update {
+            it.copy(
+                snackBarMessageRes = Res.string.store_snackbar_purchase_done
+            )
+        }
+    }
+
+    private fun onRestoreDone() {
+        _uiState.update {
+            it.copy(
+                snackBarMessageRes = Res.string.store_snackbar_restore_done
+            )
+        }
+    }
+
+    fun dismissSnackBar() {
+        _uiState.update { it.copy(snackBarMessageRes = null) }
     }
 }
