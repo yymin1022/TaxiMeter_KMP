@@ -14,10 +14,15 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,14 +44,30 @@ object StoreScreen: Screen {
         val viewModel: StoreViewModel = getScreenModel()
         val uiState = viewModel.uiState.collectAsState()
 
-        StoreScreenInternal(
+        val snackBarHostState = remember { SnackbarHostState() }
+        val snackBarMessageRes = uiState.value.snackBarMessageRes
+        if(snackBarMessageRes != null) {
+            val message = stringResource(snackBarMessageRes)
+            LaunchedEffect(snackBarMessageRes) {
+                snackBarHostState.showSnackbar(message)
+                viewModel.dismissSnackBar()
+            }
+        }
+
+        Scaffold(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            uiState = uiState.value,
-            processPurchase = viewModel::processPurchase,
-            restorePurchase = viewModel::restorePurchases,
-        )
+                .fillMaxSize(),
+            snackbarHost = { SnackbarHost(snackBarHostState) }
+        ) {
+            StoreScreenInternal(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                uiState = uiState.value,
+                processPurchase = viewModel::processPurchase,
+                restorePurchase = viewModel::restorePurchases,
+            )
+        }
     }
 
     @Composable
