@@ -35,7 +35,7 @@ data class StoreUiState(
 
 class StoreViewModel: ScreenModel {
     companion object {
-        private const val SKU_ID_AD_REMOVE = "ad_remove"
+        const val SKU_ID_AD_REMOVE = "ad_remove"
         private const val SKU_ID_DONATION_1000 = "donation_1000"
         private const val SKU_ID_DONATION_5000 = "donation_5000"
         private const val SKU_ID_DONATION_10000 = "donation_10000"
