@@ -10,13 +10,11 @@ import androidx.compose.material.icons.filled.MoneyOff
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.revenuecat.purchases.kmp.Purchases
-import com.revenuecat.purchases.kmp.ktx.awaitCustomerInfo
 import com.revenuecat.purchases.kmp.ktx.awaitOfferings
 import com.revenuecat.purchases.kmp.ktx.awaitPurchase
 import com.revenuecat.purchases.kmp.ktx.awaitRestore
 import com.revenuecat.purchases.kmp.models.CustomerInfo
-import com.yong.taximeter.common.util.PreferenceUtil
-import com.yong.taximeter.common.util.PreferenceUtil.KEY_AD_REMOVAL
+import com.yong.taximeter.common.util.AdvertisementUtil
 import com.yong.taximeter.ui.main.subscreen.store.model.StoreProduct
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -55,7 +53,7 @@ class StoreViewModel: ScreenModel {
 
     init {
         loadDefaultOffers()
-        checkAndUpdateAdRemovalPref()
+        updateAdRemovalPref()
     }
 
     private fun loadDefaultOffers() {
@@ -93,7 +91,7 @@ class StoreViewModel: ScreenModel {
                 val purchaseResult = Purchases.sharedInstance.awaitPurchase(product.rcPackage)
                 if(purchaseResult.storeTransaction.productIds.isNotEmpty()) {
                     onPurchaseDone()
-                    checkAndUpdateAdRemovalPref()
+                    updateAdRemovalPref()
                 }
             } catch(e: Exception) {
                 e.printStackTrace()
@@ -107,7 +105,7 @@ class StoreViewModel: ScreenModel {
                 val customerInfo: CustomerInfo = Purchases.sharedInstance.awaitRestore()
                 if(customerInfo.entitlements.active.isNotEmpty()) {
                     onRestoreDone()
-                    checkAndUpdateAdRemovalPref()
+                    updateAdRemovalPref()
                 }
             } catch(e: Exception) {
                 e.printStackTrace()
@@ -115,15 +113,10 @@ class StoreViewModel: ScreenModel {
         }
     }
 
-    private fun checkAndUpdateAdRemovalPref() {
+    private fun updateAdRemovalPref() {
         screenModelScope.launch {
-            try {
-                val customerInfo = Purchases.sharedInstance.awaitCustomerInfo()
-                val isAdRemove = customerInfo.entitlements[SKU_ID_AD_REMOVE]?.isActive ?: false
-                PreferenceUtil.putBoolean(KEY_AD_REMOVAL, isAdRemove)
-            } catch(e: Exception) {
-                e.printStackTrace()
-            }
+            val isAdRemoval = AdvertisementUtil.isAdRemovalPurchased()
+            AdvertisementUtil.updateAdRemovalPref(isEnabled = isAdRemoval)
         }
     }
 
