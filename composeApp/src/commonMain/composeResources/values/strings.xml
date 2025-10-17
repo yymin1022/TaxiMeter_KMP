@@ -65,7 +65,7 @@
     <string name="setting_item_theme_horse">Horse</string>
 
     <!-- Store -->
-    <string name="store_desc_text">Purchase Items except Advertise Remove are just donation for Developer. If you want to get refund, read Appstore Detail Page and send me an E-mail\n</string>
+    <string name="store_desc_text">Purchase Items except Advertisement Remove are just donation for Developer. If you want to get refund, read App Store / Google Play Detail Page and send me an E-mail\n</string>
     <string name="store_item_restore">Restore Purchases</string>
     <string name="store_snackbar_loading_error">Failed to connect server</string>
     <string name="store_snackbar_purchase_done">Thanks for purchasing!</string>
