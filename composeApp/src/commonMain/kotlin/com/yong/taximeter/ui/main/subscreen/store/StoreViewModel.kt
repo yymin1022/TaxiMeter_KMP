@@ -91,7 +91,6 @@ class StoreViewModel: ScreenModel {
                 val purchaseResult = Purchases.sharedInstance.awaitPurchase(product.rcPackage)
                 if(purchaseResult.storeTransaction.productIds.isNotEmpty()) {
                     onPurchaseDone()
-                    updateAdRemovalPref()
                 }
             } catch(e: Exception) {
                 e.printStackTrace()
@@ -105,7 +104,6 @@ class StoreViewModel: ScreenModel {
                 val customerInfo: CustomerInfo = Purchases.sharedInstance.awaitRestore()
                 if(customerInfo.entitlements.active.isNotEmpty()) {
                     onRestoreDone()
-                    updateAdRemovalPref()
                 }
             } catch(e: Exception) {
                 e.printStackTrace()
@@ -113,14 +111,9 @@ class StoreViewModel: ScreenModel {
         }
     }
 
-    private fun updateAdRemovalPref() {
-        screenModelScope.launch {
-            val isAdRemoval = AdvertisementUtil.isAdRemovalPurchased()
-            AdvertisementUtil.updateAdRemovalPref(isEnabled = isAdRemoval)
-        }
-    }
-
     private fun onPurchaseDone() {
+        updateAdRemovalPref()
+
         _uiState.update {
             it.copy(
                 snackBarMessageRes = Res.string.store_snackbar_purchase_done
@@ -129,6 +122,8 @@ class StoreViewModel: ScreenModel {
     }
 
     private fun onRestoreDone() {
+        updateAdRemovalPref()
+
         _uiState.update {
             it.copy(
                 snackBarMessageRes = Res.string.store_snackbar_restore_done
@@ -138,5 +133,12 @@ class StoreViewModel: ScreenModel {
 
     fun dismissSnackBar() {
         _uiState.update { it.copy(snackBarMessageRes = null) }
+    }
+
+    private fun updateAdRemovalPref() {
+        screenModelScope.launch {
+            val isAdRemoval = AdvertisementUtil.isAdRemovalPurchased()
+            AdvertisementUtil.updateAdRemovalPref(isEnabled = isAdRemoval)
+        }
     }
 }
