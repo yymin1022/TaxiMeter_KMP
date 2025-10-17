@@ -106,10 +106,8 @@ class StoreViewModel: ScreenModel {
     fun restorePurchases() {
         screenModelScope.launch {
             try {
-                val customerInfo: CustomerInfo = Purchases.sharedInstance.awaitRestore()
-                if(customerInfo.entitlements.active.isNotEmpty()) {
-                    onRestore(isSuccess = true)
-                }
+                Purchases.sharedInstance.awaitRestore()
+                onRestore(isSuccess = true)
             } catch(e: Exception) {
                 e.printStackTrace()
                 onRestore(isSuccess = false)
