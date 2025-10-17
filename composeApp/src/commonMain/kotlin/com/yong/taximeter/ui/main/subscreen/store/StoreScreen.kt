@@ -81,7 +81,8 @@ object StoreScreen: Screen {
         val products = uiState.products
 
         Column(
-            modifier = modifier,
+            modifier = modifier
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
