@@ -20,7 +20,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import com.yong.taximeter.common.ui.ShowSnackBar
 import com.yong.taximeter.ui.main.subscreen.store.model.StoreProduct
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
@@ -46,13 +46,11 @@ object StoreScreen: Screen {
 
         val snackBarHostState = remember { SnackbarHostState() }
         val snackBarMessageRes = uiState.value.snackBarMessageRes
-        if(snackBarMessageRes != null) {
-            val message = stringResource(snackBarMessageRes)
-            LaunchedEffect(snackBarMessageRes) {
-                snackBarHostState.showSnackbar(message)
-                viewModel.dismissSnackBar()
-            }
-        }
+        ShowSnackBar(
+            snackBarHostState = snackBarHostState,
+            messageRes = snackBarMessageRes,
+            dismissSnackBar = viewModel::dismissSnackBar,
+        )
 
         Scaffold(
             modifier = Modifier
