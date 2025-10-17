@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.StringResource
 import taximeter.composeapp.generated.resources.Res
+import taximeter.composeapp.generated.resources.store_snackbar_loading_error
 import taximeter.composeapp.generated.resources.store_snackbar_purchase_done
 import taximeter.composeapp.generated.resources.store_snackbar_purchase_error
 import taximeter.composeapp.generated.resources.store_snackbar_restore_done
@@ -83,6 +84,7 @@ class StoreViewModel: ScreenModel {
                 }
             } catch(e: Exception) {
                 e.printStackTrace()
+                onLoadError()
             }
         }
     }
@@ -112,6 +114,14 @@ class StoreViewModel: ScreenModel {
                 e.printStackTrace()
                 onRestore(isSuccess = false)
             }
+        }
+    }
+
+    private fun onLoadError() {
+        _uiState.update {
+            it.copy(
+                snackBarMessageRes = Res.string.store_snackbar_loading_error
+            )
         }
     }
 
