@@ -13,11 +13,11 @@ fun ShowSnackBar(
     message: String? = null,
     dismissSnackBar: () -> Unit,
 ) {
-    val message = messageRes?.let { stringResource(it) } ?: message
+    val snackBarText = messageRes?.let { stringResource(it) } ?: message
 
-    LaunchedEffect(message) {
-        if(message != null) {
-            snackBarHostState.showSnackbar(message)
+    LaunchedEffect(message, messageRes) {
+        if(snackBarText != null) {
+            snackBarHostState.showSnackbar(snackBarText)
             dismissSnackBar()
         }
     }
