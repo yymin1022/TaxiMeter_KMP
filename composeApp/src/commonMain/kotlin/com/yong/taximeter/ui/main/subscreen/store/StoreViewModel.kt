@@ -23,7 +23,9 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.StringResource
 import taximeter.composeapp.generated.resources.Res
 import taximeter.composeapp.generated.resources.store_snackbar_purchase_done
+import taximeter.composeapp.generated.resources.store_snackbar_purchase_error
 import taximeter.composeapp.generated.resources.store_snackbar_restore_done
+import taximeter.composeapp.generated.resources.store_snackbar_restore_error
 
 data class StoreUiState(
     val isLoading: Boolean = true,
@@ -90,10 +92,11 @@ class StoreViewModel: ScreenModel {
             try {
                 val purchaseResult = Purchases.sharedInstance.awaitPurchase(product.rcPackage)
                 if(purchaseResult.storeTransaction.productIds.isNotEmpty()) {
-                    onPurchaseDone()
+                    onPurchase(isSuccess = true)
                 }
             } catch(e: Exception) {
                 e.printStackTrace()
+                onPurchase(isSuccess = false)
             }
         }
     }
@@ -103,30 +106,33 @@ class StoreViewModel: ScreenModel {
             try {
                 val customerInfo: CustomerInfo = Purchases.sharedInstance.awaitRestore()
                 if(customerInfo.entitlements.active.isNotEmpty()) {
-                    onRestoreDone()
+                    onRestore(isSuccess = true)
                 }
             } catch(e: Exception) {
                 e.printStackTrace()
+                onRestore(isSuccess = false)
             }
         }
     }
 
-    private fun onPurchaseDone() {
+    private fun onPurchase(isSuccess: Boolean) {
         updateAdRemovalPref()
 
+        val snackBarMessageRes = if(isSuccess) Res.string.store_snackbar_purchase_done else Res.string.store_snackbar_purchase_error
         _uiState.update {
             it.copy(
-                snackBarMessageRes = Res.string.store_snackbar_purchase_done
+                snackBarMessageRes = snackBarMessageRes
             )
         }
     }
 
-    private fun onRestoreDone() {
+    private fun onRestore(isSuccess: Boolean) {
         updateAdRemovalPref()
 
+        val snackBarMessageRes = if(isSuccess) Res.string.store_snackbar_restore_done else Res.string.store_snackbar_restore_error
         _uiState.update {
             it.copy(
-                snackBarMessageRes = Res.string.store_snackbar_restore_done
+                snackBarMessageRes = snackBarMessageRes
             )
         }
     }
