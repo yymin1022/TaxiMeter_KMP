@@ -170,23 +170,23 @@ object StoreScreen: Screen {
             )
         }
     }
-}
 
-@Composable
-private fun StoreDescriptionText(
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+    @Composable
+    private fun StoreDescriptionText(
+        modifier: Modifier = Modifier,
     ) {
-        Text(
-            text = stringResource(Res.string.store_desc_text),
-            color = Color.Gray,
-            fontSize = 12.sp,
-            lineHeight = 14.sp,
-            textAlign = TextAlign.Center,
-        )
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+        ) {
+            Text(
+                text = stringResource(Res.string.store_desc_text),
+                color = Color.Gray,
+                fontSize = 12.sp,
+                lineHeight = 14.sp,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
