@@ -116,7 +116,10 @@ object StoreScreen: Screen {
         LazyColumn(
             modifier = modifier,
         ) {
-            items(products.size) {
+            items(
+                count = products.size,
+                key = { idx -> products[idx].id }
+            ) {
                 val product = products[it]
                 val productIcon = product.icon
                 val productTitle = product.title
