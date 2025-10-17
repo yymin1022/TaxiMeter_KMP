@@ -26,4 +26,16 @@ actual class PreferenceManager {
     actual suspend fun putInt(key: String, value: Int) {
         userDefaults.setInteger(value.toLong(), forKey = key)
     }
+
+    actual suspend fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return if (userDefaults.objectForKey(key) != null) {
+            userDefaults.boolForKey(key)
+        } else {
+            defaultValue
+        }
+    }
+
+    actual suspend fun putBoolean(key: String, value: Boolean) {
+        userDefaults.setBool(value, forKey = key)
+    }
 }

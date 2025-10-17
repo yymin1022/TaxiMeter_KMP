@@ -8,6 +8,7 @@ plugins {
 
     kotlin("plugin.serialization") version libs.versions.kotlin.get()
     id("com.google.gms.google-services")
+    alias(libs.plugins.kmp.secrets)
 }
 
 kotlin {
@@ -61,9 +62,18 @@ kotlin {
             // Firebase
             implementation(libs.firebase.common)
             implementation(libs.firebase.firestore)
+
+            // RevenueCat
+            implementation(libs.revenuecat.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        named { it.lowercase().startsWith("ios") }.configureEach {
+            languageSettings {
+                optIn("kotlinx.cinterop.ExperimentalForeignApi")
+            }
         }
     }
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EE473E322E96CDDF004FA802 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EE473E312E96CDDF004FA802 /* FirebaseFirestore */; };
+		EE9E27F82E98EE4900214FBC /* PurchasesHybridCommon in Frameworks */ = {isa = PBXBuildFile; productRef = EE9E27F72E98EE4900214FBC /* PurchasesHybridCommon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EE9E27F82E98EE4900214FBC /* PurchasesHybridCommon in Frameworks */,
 				EE473E322E96CDDF004FA802 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +93,7 @@
 			name = iosApp;
 			packageProductDependencies = (
 				EE473E312E96CDDF004FA802 /* FirebaseFirestore */,
+				EE9E27F72E98EE4900214FBC /* PurchasesHybridCommon */,
 			);
 			productName = iosApp;
 			productReference = A7AA5F7D35B926A5A08F3E74 /* TaxiMeter.app */;
@@ -122,6 +125,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				EE473E302E96CDDF004FA802 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				EE9E27F62E98EE4900214FBC /* XCRemoteSwiftPackageReference "purchases-hybrid-common" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FF50EB7FBCD13C9879A61705 /* Products */;
@@ -389,6 +393,14 @@
 				minimumVersion = 12.4.0;
 			};
 		};
+		EE9E27F62E98EE4900214FBC /* XCRemoteSwiftPackageReference "purchases-hybrid-common" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-hybrid-common";
+			requirement = {
+				kind = exactVersion;
+				version = 17.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -396,6 +408,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EE473E302E96CDDF004FA802 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		EE9E27F72E98EE4900214FBC /* PurchasesHybridCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EE9E27F62E98EE4900214FBC /* XCRemoteSwiftPackageReference "purchases-hybrid-common" */;
+			productName = PurchasesHybridCommon;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
