@@ -29,7 +29,7 @@ object MeterScreen: Screen {
             uiState = uiState.value,
             startDriving = viewModel::startDriving,
             stopDriving = viewModel::stopDriving,
-            updateNightPerc = viewModel::updateNightPerc,
+            showNightPercInfo = viewModel::showNightPercInfo,
             updateOutCityPerc = viewModel::updateOutCityPerc,
         )
     }
@@ -40,7 +40,7 @@ object MeterScreen: Screen {
         uiState: MeterUiState,
         startDriving: () -> Unit,
         stopDriving: () -> Unit,
-        updateNightPerc: (isEnabled: Boolean) -> Unit,
+        showNightPercInfo: () -> Unit,
         updateOutCityPerc: (isEnabled: Boolean) -> Unit,
     ) {
         val curCost = uiState.curCost
@@ -82,7 +82,7 @@ object MeterScreen: Screen {
                 isOutCityPerc = isOutCityPerc,
                 startDriving = startDriving,
                 stopDriving = stopDriving,
-                updateNightPerc = updateNightPerc,
+                showNightPercInfo = showNightPercInfo,
                 updateOutCityPerc = updateOutCityPerc,
             )
         }
@@ -151,7 +151,7 @@ object MeterScreen: Screen {
         isOutCityPerc: Boolean,
         startDriving: () -> Unit,
         stopDriving: () -> Unit,
-        updateNightPerc: (isEnabled: Boolean) -> Unit,
+        showNightPercInfo: () -> Unit,
         updateOutCityPerc: (isEnabled: Boolean) -> Unit,
     ) {
         // TODO: Meter Control UI 구현
@@ -180,7 +180,7 @@ object MeterScreen: Screen {
             ) {
                 Button(
                     modifier = Modifier,
-                    onClick = { updateNightPerc(isNightPerc.not()) },
+                    onClick = { showNightPercInfo() },
                 ) {
                     Text("Night Perc [Current is $isNightPerc]")
                 }

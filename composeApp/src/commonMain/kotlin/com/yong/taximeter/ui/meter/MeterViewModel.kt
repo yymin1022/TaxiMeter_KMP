@@ -17,6 +17,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.StringResource
+import taximeter.composeapp.generated.resources.Res
+import taximeter.composeapp.generated.resources.meter_snackbar_nightperc_info
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -30,6 +33,8 @@ data class MeterUiState(
     val isDriving: Boolean = false,
     val isNightPerc: Boolean = false,
     val isOutCityPerc: Boolean = false,
+
+    val snackBarMessageRes: StringResource? = null,
 )
 
 class MeterViewModel: ScreenModel {
@@ -73,12 +78,16 @@ class MeterViewModel: ScreenModel {
 
     }
 
-    fun updateNightPerc(isEnabled: Boolean) {
-        _uiState.update { it.copy(isNightPerc = isEnabled) }
+    fun showNightPercInfo() {
+        _uiState.update { it.copy(snackBarMessageRes = Res.string.meter_snackbar_nightperc_info) }
     }
 
     fun updateOutCityPerc(isEnabled: Boolean) {
         _uiState.update { it.copy(isOutCityPerc = isEnabled) }
+    }
+
+    fun dismissSnackBar() {
+        _uiState.update { it.copy(snackBarMessageRes = null) }
     }
 
     private fun setCostInitialState() {
