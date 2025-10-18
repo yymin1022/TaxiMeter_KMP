@@ -29,8 +29,8 @@ object MeterScreen: Screen {
             uiState = uiState.value,
             startDriving = viewModel::startDriving,
             stopDriving = viewModel::stopDriving,
-            showNightPercInfo = viewModel::showNightPercInfo,
-            updateOutCityPerc = viewModel::updateOutCityPerc,
+            onClickNightPerc = viewModel::showNightPercInfo,
+            onClickOutCityPerc = viewModel::updateOutCityPerc,
         )
     }
 
@@ -40,8 +40,8 @@ object MeterScreen: Screen {
         uiState: MeterUiState,
         startDriving: () -> Unit,
         stopDriving: () -> Unit,
-        showNightPercInfo: () -> Unit,
-        updateOutCityPerc: (isEnabled: Boolean) -> Unit,
+        onClickNightPerc: () -> Unit,
+        onClickOutCityPerc: (isEnabled: Boolean) -> Unit,
     ) {
         val curCost = uiState.curCost
         val curCounter = uiState.curCounter
@@ -82,8 +82,8 @@ object MeterScreen: Screen {
                 isOutCityPerc = isOutCityPerc,
                 startDriving = startDriving,
                 stopDriving = stopDriving,
-                showNightPercInfo = showNightPercInfo,
-                updateOutCityPerc = updateOutCityPerc,
+                onClickNightPerc = onClickNightPerc,
+                onClickOutCityPerc = onClickOutCityPerc,
             )
         }
     }
@@ -151,8 +151,8 @@ object MeterScreen: Screen {
         isOutCityPerc: Boolean,
         startDriving: () -> Unit,
         stopDriving: () -> Unit,
-        showNightPercInfo: () -> Unit,
-        updateOutCityPerc: (isEnabled: Boolean) -> Unit,
+        onClickNightPerc: () -> Unit,
+        onClickOutCityPerc: (isEnabled: Boolean) -> Unit,
     ) {
         // TODO: Meter Control UI 구현
         Column(
@@ -180,13 +180,13 @@ object MeterScreen: Screen {
             ) {
                 Button(
                     modifier = Modifier,
-                    onClick = { showNightPercInfo() },
+                    onClick = { onClickNightPerc() },
                 ) {
                     Text("Night Perc [Current is $isNightPerc]")
                 }
                 Button(
                     modifier = Modifier,
-                    onClick = { updateOutCityPerc(isOutCityPerc.not()) },
+                    onClick = { onClickOutCityPerc(isOutCityPerc.not()) },
                 ) {
                     Text("OutCity Perc [Current is $isOutCityPerc]")
                 }
