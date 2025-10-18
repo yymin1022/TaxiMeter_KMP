@@ -15,6 +15,9 @@
     <string name="home_description_default">Touch to Start</string>
     <string name="home_description_distance">Drove for %1$dkm with TaxiMeter!</string>
 
+    <!-- Meter -->
+    <string name="meter_snackbar_nightperc_info">Night Percentage will be will be applied automatically during the scheduled period.</string>
+
     <!-- Setting Dialog Title -->
     <string name="setting_dialog_title_location">Select Location</string>
     <string name="setting_dialog_title_theme">Select Theme</string>
