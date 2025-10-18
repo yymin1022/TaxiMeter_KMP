@@ -10,6 +10,7 @@ import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_LOCATION
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -59,23 +60,24 @@ class MeterViewModel: ScreenModel {
             val curLocation = LocationSetting.fromKey(curLocationPref)
             this@MeterViewModel.costInfo = CostUtil.getCostForLocation(curLocation)
 
-            setCostInitialState()
+            setCostInitialState(false)
         }
     }
 
     fun startDriving() {
         if(uiState.value.isDriving.not()) {
             startDriveJob()
-            _uiState.update { it.copy(isDriving = true) }
         }
     }
 
     fun stopDriving() {
         if(uiState.value.isDriving) {
-            meterDriveJob?.cancel()
-            setCostInitialState()
-        }
+            screenModelScope.launch {
+                meterDriveJob?.cancelAndJoin()
+                setCostInitialState(false)
+            }
 
+        }
     }
 
     fun showNightPercInfo() {
@@ -90,7 +92,7 @@ class MeterViewModel: ScreenModel {
         _uiState.update { it.copy(snackBarMessageRes = null) }
     }
 
-    private fun setCostInitialState() {
+    private fun setCostInitialState(isDriving: Boolean) {
         lastUpdateTimeMillis = METER_UPDATE_NEED_INIT
 
         _uiState.update {
@@ -100,7 +102,7 @@ class MeterViewModel: ScreenModel {
                 curCounter = this.costInfo.distBase,
                 curDistance = 0f,
                 curSpeed = 0f,
-                isDriving = false,
+                isDriving = isDriving,
                 isNightPerc = false,
                 isOutCityPerc = false,
             )
@@ -109,6 +111,9 @@ class MeterViewModel: ScreenModel {
 
     private fun startDriveJob() {
         this.meterDriveJob = screenModelScope.launch(Dispatchers.Default) {
+            setCostInitialState(isDriving = true)
+            updateBaseCostIfNightPerc()
+
             while(true) {
                 increaseCost()
                 delay(METER_UPDATE_INTERVAL)
@@ -170,6 +175,9 @@ class MeterViewModel: ScreenModel {
             }
         }
 
+        // 심야할증 정보
+        var isNightPerc = uiState.value.isNightPerc
+
         // Cost 변화 연산
         val curCost = uiState.value.curCost
         var newCost = curCost
@@ -191,36 +199,28 @@ class MeterViewModel: ScreenModel {
             newCounter = newCounter.coerceAtLeast(0)
 
             // 심야할증 적용
-            val isNightPerc = uiState.value.isNightPerc
-            // TODO: 심야할증은 직접 적용하지 않고, 시간대에 따라 자동 적용되도록 변경 필요
-            if(isNightPerc) {
-                val curTimeZone = TimeZone.currentSystemDefault()
-                val curDateTime = curMoment.toLocalDateTime(curTimeZone)
+            val curTimeZone = TimeZone.currentSystemDefault()
+            val curDateTime = curMoment.toLocalDateTime(curTimeZone)
 
-                // 심야할증 적용 연산은 1단계 적용 여부 확인 후,
-                // 2단계 여부를 확인해 최종 연산한다
-                val curHour = curDateTime.hour
-                val nightPerc1From = costInfo.percNight1From
-                val nightPerc1To = costInfo.percNight1To
-                if((curHour >= 20 && curHour >= nightPerc1From)
-                    || (curHour <= 6 && curHour < nightPerc1To)) {
-                    // 심야할증 1단계 적용 가능
-                    val nightPerc2From = costInfo.percNight2From
-                    val nightPerc2To = costInfo.percNight2To
-                    if((curHour >= 20 && curHour >= nightPerc2From)
-                        || (curHour <= 6 && curHour < nightPerc2To)) {
-                        // 심야할증 2단계 적용
-                        val percNight2 = costInfo.percNight2
-                        deltaCost += percNight2
-                    } else {
-                        // 심야할증 1단계 적용
-                        val percNight1 = costInfo.percNight1
-                        deltaCost += percNight1
-                    }
-                    // TODO: 심야할증 활성화 UI State Update
+            // 심야할증 적용 연산은 1단계 적용 여부 확인 후,
+            // 2단계 여부를 확인해 최종 연산한다
+            val curHour = curDateTime.hour
+            if(isNightPercStep1(curHour)) {
+                // 심야할증 1단계 적용 가능
+                // 심야할증 State 활성화
+                isNightPerc = true
+                if(isNightPercStep2(curHour)) {
+                    // 심야할증 2단계 적용
+                    val percNight2 = costInfo.percNight2
+                    deltaCost += percNight2
                 } else {
-                    // TODO: 심야할증 비활성화 UI State Update
+                    // 심야할증 1단계 적용
+                    val percNight1 = costInfo.percNight1
+                    deltaCost += percNight1
                 }
+            } else {
+                // 심야할증 State 비활성화
+                isNightPerc = false
             }
 
             // 시외할증 적용
@@ -241,7 +241,43 @@ class MeterViewModel: ScreenModel {
                 curCounter = newCounter,
                 curDistance = newDistance,
                 curSpeed = newSpeed,
+                isNightPerc = isNightPerc,
             )
         }
+    }
+
+    private fun isNightPercStep1(curHour: Int): Boolean {
+        val nightPercFrom = costInfo.percNight1From
+        val nightPercTo = costInfo.percNight1To
+        return ((curHour >= 18 && curHour >= nightPercFrom)
+            || (curHour <= 6 && curHour < nightPercTo))
+    }
+
+    private fun isNightPercStep2(curHour: Int): Boolean {
+        val nightPercFrom = costInfo.percNight2From
+        val nightPercTo = costInfo.percNight2To
+        return ((curHour >= 18 && curHour >= nightPercFrom)
+                || (curHour <= 6 && curHour < nightPercTo))
+    }
+
+    @OptIn(ExperimentalTime::class)
+    private fun updateBaseCostIfNightPerc() {
+        val curTimeZone = TimeZone.currentSystemDefault()
+        val curMoment = Clock.System.now()
+        val curHour = curMoment.toLocalDateTime(curTimeZone).hour
+
+        var newBaseCost = costInfo.costBase.toFloat()
+        when {
+            isNightPercStep2(curHour) -> {
+                val percNight2 = costInfo.percNight2
+                newBaseCost *= ((percNight2 + 100).toFloat() / 100f)
+            }
+            isNightPercStep1(curHour) -> {
+                val percNight1 = costInfo.percNight1
+                newBaseCost *= ((percNight1 + 100).toFloat() / 100f)
+            }
+        }
+
+        _uiState.update { it.copy(curCost = newBaseCost.toInt()) }
     }
 }
