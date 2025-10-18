@@ -6,14 +6,19 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.yong.taximeter.common.model.CostMode
+import com.yong.taximeter.common.ui.ShowSnackBar
 import org.jetbrains.compose.resources.DrawableResource
 
 object MeterScreen: Screen {
@@ -22,16 +27,30 @@ object MeterScreen: Screen {
         val viewModel: MeterViewModel = getScreenModel()
         val uiState = viewModel.uiState.collectAsState()
 
-        MeterScreenInternal(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            uiState = uiState.value,
-            startDriving = viewModel::startDriving,
-            stopDriving = viewModel::stopDriving,
-            onClickNightPerc = viewModel::showNightPercInfo,
-            onClickOutCityPerc = viewModel::updateOutCityPerc,
+        val snackBarHostState = remember { SnackbarHostState() }
+        val snackBarMessageRes = uiState.value.snackBarMessageRes
+        ShowSnackBar(
+            snackBarHostState = snackBarHostState,
+            messageRes = snackBarMessageRes,
+            dismissSnackBar = viewModel::dismissSnackBar,
         )
+
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize(),
+            snackbarHost = { SnackbarHost(snackBarHostState) }
+        ) {
+            MeterScreenInternal(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                uiState = uiState.value,
+                startDriving = viewModel::startDriving,
+                stopDriving = viewModel::stopDriving,
+                onClickNightPerc = viewModel::showNightPercInfo,
+                onClickOutCityPerc = viewModel::updateOutCityPerc,
+            )
+        }
     }
 
     @Composable
