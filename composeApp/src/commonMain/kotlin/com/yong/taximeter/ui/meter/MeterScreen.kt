@@ -1,5 +1,6 @@
 package com.yong.taximeter.ui.meter
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -75,6 +76,7 @@ object MeterScreen: Screen {
 
         Column(
             modifier = modifier,
+            verticalArrangement = Arrangement.Bottom,
         ) {
             MeterRunnerIcon(
                 modifier = Modifier,
