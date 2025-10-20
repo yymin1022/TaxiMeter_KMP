@@ -16,6 +16,9 @@
     <string name="home_description_distance">Drove for %1$dkm with TaxiMeter!</string>
 
     <!-- Meter -->
+    <string name="meter_cost_mode_base">Base Cost</string>
+    <string name="meter_cost_mode_distance">Distance based Cost</string>
+    <string name="meter_cost_mode_time">Time based Cost</string>
     <string name="meter_snackbar_nightperc_info">Night Percentage will be will be applied automatically during the scheduled period.</string>
 
     <!-- Setting Dialog Title -->
