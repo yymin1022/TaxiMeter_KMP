@@ -19,6 +19,14 @@
     <string name="meter_cost_mode_base">Base Cost</string>
     <string name="meter_cost_mode_distance">Distance based Cost</string>
     <string name="meter_cost_mode_time">Time based Cost</string>
+    <string name="meter_status_cost_mode_title">Cost Mode</string>
+    <string name="meter_status_distance_title">Driven Distance</string>
+    <string name="meter_status_distance_desc">%1$dkm</string>
+    <string name="meter_status_drive_status_title">Drive Status</string>
+    <string name="meter_status_drive_status_desc_false">Ready to Drive</string>
+    <string name="meter_status_drive_status_desc_true">Driving...</string>
+    <string name="meter_status_speed_title">Speed</string>
+    <string name="meter_status_speed_desc">%1$dkm/h</string>
     <string name="meter_snackbar_nightperc_info">Night Percentage will be will be applied automatically during the scheduled period.</string>
 
     <!-- Setting Dialog Title -->
