@@ -28,7 +28,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import com.yong.taximeter.common.model.CostMode
 import com.yong.taximeter.common.ui.ShowSnackBar
 import org.jetbrains.compose.resources.DrawableResource
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
 import taximeter.composeapp.generated.resources.meter_status_cost_mode_title
