@@ -20,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -64,7 +63,7 @@ object MeterScreen: Screen {
             MeterScreenInternal(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Color.Black)
+                    .background(color = MeterColor.MeterBackground)
                     .padding(16.dp),
                 uiState = uiState.value,
                 startDriving = viewModel::startDriving,
@@ -292,14 +291,14 @@ object MeterScreen: Screen {
             // Title Text
             Text(
                 text = title,
-                color = Color.LightGray,
+                color = MeterColor.MeterTextColorWhite,
                 fontSize = 20.sp,
             )
 
             // Description Text
             Text(
                 text = desc,
-                color = Color.LightGray,
+                color = MeterColor.MeterTextColorWhite,
                 fontSize = 20.sp,
             )
         }
