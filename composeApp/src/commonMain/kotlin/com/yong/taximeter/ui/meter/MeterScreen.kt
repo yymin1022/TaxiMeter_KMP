@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -20,6 +21,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -230,7 +233,8 @@ object MeterScreen: Screen {
 
         Row(
             modifier = modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
         ) {
             Column(
                 modifier = Modifier
@@ -314,43 +318,81 @@ object MeterScreen: Screen {
         onClickNightPerc: () -> Unit,
         onClickOutCityPerc: (isEnabled: Boolean) -> Unit,
     ) {
-        // TODO: Meter Control UI 구현
         Column(
-            modifier = modifier,
+            modifier = modifier
+                .padding(vertical = 4.dp),
         ) {
             Row(
-                modifier = Modifier,
+                modifier = Modifier
+                    .fillMaxWidth(),
             ) {
-                Button(
-                    modifier = Modifier,
+                // Start Driving
+                MeterControlButton(
+                    modifier = Modifier
+                        .weight(1f),
+                    backgroundColor = MeterColor.MeterBlue,
+                    text = "Start Driving",
                     onClick = startDriving,
-                ) {
-                    Text("Start Driving")
-                }
-                Button(
-                    modifier = Modifier,
+                )
+                // Stop Driving
+                MeterControlButton(
+                    modifier = Modifier
+                        .weight(1f),
+                    backgroundColor = MeterColor.MeterYellow,
+                    text = "Stop Driving",
                     onClick = stopDriving,
-                ) {
-                    Text("Stop Driving")
-                }
+                )
             }
 
             Row(
-                modifier = Modifier,
+                modifier = Modifier
+                    .fillMaxWidth(),
             ) {
-                Button(
-                    modifier = Modifier,
-                    onClick = { onClickNightPerc() },
-                ) {
-                    Text("Night Perc [Current is $isNightPerc]")
-                }
-                Button(
-                    modifier = Modifier,
+                // Night Percentage
+                MeterControlButton(
+                    modifier = Modifier
+                        .weight(1f),
+                    backgroundColor = MeterColor.MeterGreen,
+                    text = "Night [$isNightPerc]",
+                    onClick = onClickNightPerc,
+                )
+                // OutCity Percentage
+                MeterControlButton(
+                    modifier = Modifier
+                        .weight(1f),
+                    backgroundColor = MeterColor.MeterRed,
+                    text = "OutCity [$isOutCityPerc]",
                     onClick = { onClickOutCityPerc(isOutCityPerc.not()) },
-                ) {
-                    Text("OutCity Perc [Current is $isOutCityPerc]")
-                }
+                )
             }
+        }
+    }
+
+    @Composable
+    private fun MeterControlButton(
+        modifier: Modifier = Modifier,
+        backgroundColor: Color = MeterColor.MeterRed,
+        textColor: Color = MeterColor.MeterBtnText,
+        text: String,
+        onClick: () -> Unit = {},
+    ) {
+        Button(
+            modifier = modifier
+                .padding(horizontal = 4.dp, vertical = 4.dp),
+            colors = ButtonColors(
+                containerColor = backgroundColor,
+                contentColor = textColor,
+                disabledContainerColor = backgroundColor,
+                disabledContentColor = MeterColor.BtnTextDisabled,
+            ),
+            onClick = onClick,
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(vertical = 12.dp),
+                text = text,
+                textAlign = TextAlign.Center,
+            )
         }
     }
 }
