@@ -26,10 +26,12 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.yong.taximeter.common.model.CostMode
+import com.yong.taximeter.common.ui.MeterColor
 import com.yong.taximeter.common.ui.ShowSnackBar
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
+import taximeter.composeapp.generated.resources.meter_cost_text
 import taximeter.composeapp.generated.resources.meter_status_cost_mode_title
 import taximeter.composeapp.generated.resources.meter_status_distance_desc
 import taximeter.composeapp.generated.resources.meter_status_distance_title
@@ -147,12 +149,61 @@ object MeterScreen: Screen {
         curCost: Int,
         curCounter: Int,
     ) {
-        // TODO: Meter Cost UI 구현
+        val costStr = stringResource(Res.string.meter_cost_text, curCost)
+
         Column(
-            modifier = modifier,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(all = 12.dp),
+            horizontalAlignment = Alignment.End,
         ) {
-            Text("Meter Cost [$curCost]")
-            Text("Meter Counter [$curCounter]")
+            // Cost Text
+            MeterCostText(
+                modifier = Modifier,
+                costStr = costStr,
+            )
+
+            // Counter Text
+            MeterCounterText(
+                modifier = Modifier,
+                counterStr = curCounter.toString(),
+            )
+        }
+    }
+
+    @Composable
+    private fun MeterCostText(
+        modifier: Modifier = Modifier,
+        costStr: String,
+    ) {
+        Box(
+            modifier = modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.CenterEnd,
+        ) {
+            Text(
+                text = costStr,
+                color = MeterColor.MeterTextColorWhite,
+                fontSize = 64.sp,
+            )
+        }
+    }
+
+    @Composable
+    private fun MeterCounterText(
+        modifier: Modifier = Modifier,
+        counterStr: String,
+    ) {
+        Box(
+            modifier = modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.CenterEnd,
+        ) {
+            Text(
+                text = counterStr,
+                color = MeterColor.MeterBlue,
+                fontSize = 36.sp,
+            )
         }
     }
 
