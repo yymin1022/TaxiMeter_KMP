@@ -7,7 +7,9 @@ import com.yong.taximeter.common.model.CostMode
 import com.yong.taximeter.common.util.CostUtil
 import com.yong.taximeter.common.util.PreferenceUtil
 import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_LOCATION
+import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_THEME
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
+import com.yong.taximeter.ui.main.subscreen.setting.model.ThemeSetting
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
@@ -18,8 +20,20 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import taximeter.composeapp.generated.resources.Res
+import taximeter.composeapp.generated.resources.ic_circle_1
+import taximeter.composeapp.generated.resources.ic_circle_2
+import taximeter.composeapp.generated.resources.ic_circle_3
+import taximeter.composeapp.generated.resources.ic_circle_4
+import taximeter.composeapp.generated.resources.ic_circle_5
+import taximeter.composeapp.generated.resources.ic_circle_6
+import taximeter.composeapp.generated.resources.ic_circle_7
+import taximeter.composeapp.generated.resources.ic_circle_8
+import taximeter.composeapp.generated.resources.ic_horse_1
+import taximeter.composeapp.generated.resources.ic_horse_2
+import taximeter.composeapp.generated.resources.ic_horse_3
 import taximeter.composeapp.generated.resources.meter_snackbar_nightperc_info
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
@@ -35,6 +49,8 @@ data class MeterUiState(
     val isNightPerc: Boolean = false,
     val isOutCityPerc: Boolean = false,
 
+    val meterAnimationIcons: List<DrawableResource> = emptyList(),
+
     val snackBarMessageRes: StringResource? = null,
 )
 
@@ -44,6 +60,23 @@ class MeterViewModel: ScreenModel {
 
         private const val METER_UPDATE_INTERVAL = 1000L
         private const val METER_UPDATE_NEED_INIT = -1L
+
+        private val ANIMATION_ICONS_HORSE = listOf(
+            Res.drawable.ic_horse_1,
+            Res.drawable.ic_horse_2,
+            Res.drawable.ic_horse_3,
+        )
+
+        private val ANIMATION_ICONS_CIRCLE = listOf(
+            Res.drawable.ic_circle_1,
+            Res.drawable.ic_circle_2,
+            Res.drawable.ic_circle_3,
+            Res.drawable.ic_circle_4,
+            Res.drawable.ic_circle_5,
+            Res.drawable.ic_circle_6,
+            Res.drawable.ic_circle_7,
+            Res.drawable.ic_circle_8,
+        )
     }
 
     private val _uiState = MutableStateFlow(MeterUiState())
@@ -61,6 +94,17 @@ class MeterViewModel: ScreenModel {
             this@MeterViewModel.costInfo = CostUtil.getCostForLocation(curLocation)
 
             setCostInitialState(false)
+        }
+
+        screenModelScope.launch {
+            val curThemePref = PreferenceUtil.getString(KEY_SETTING_THEME, ThemeSetting.HORSE.key)
+            val curTheme = ThemeSetting.fromKey(curThemePref)
+            val animationIcons = when(curTheme) {
+                ThemeSetting.HORSE -> ANIMATION_ICONS_HORSE
+                ThemeSetting.CIRCLE -> ANIMATION_ICONS_CIRCLE
+            }
+
+            _uiState.update { it.copy(meterAnimationIcons = animationIcons) }
         }
     }
 
