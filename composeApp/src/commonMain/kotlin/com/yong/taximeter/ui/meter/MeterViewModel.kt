@@ -49,6 +49,7 @@ data class MeterUiState(
     val isNightPerc: Boolean = false,
     val isOutCityPerc: Boolean = false,
 
+    val meterAnimationDurationMillis: Int = 0,
     val meterAnimationIcons: List<DrawableResource> = emptyList(),
 
     val snackBarMessageRes: StringResource? = null,
@@ -77,6 +78,21 @@ class MeterViewModel: ScreenModel {
             Res.drawable.ic_circle_7,
             Res.drawable.ic_circle_8,
         )
+
+        private val ANIMATION_FRAME_DURATION_CIRCLE = listOf(
+            50f to 104,
+            30f to 160,
+            15f to 328,
+            0f to 1000,
+        )
+
+        private val ANIMATION_FRAME_DURATION_HORSE = listOf(
+            50f to 142,
+            30f to 200,
+            20f to 250,
+            10f to 333,
+            0f to 500,
+        )
     }
 
     private val _uiState = MutableStateFlow(MeterUiState())
@@ -86,6 +102,9 @@ class MeterViewModel: ScreenModel {
 
     private var meterDriveJob: Job? = null
     private var lastUpdateTimeMillis: Long = -1L
+
+    private lateinit var meterAnimationFrameDurations: List<Pair<Float, Int>>
+    private lateinit var meterAnimationIcons: List<DrawableResource>
 
     init {
         screenModelScope.launch {
@@ -99,12 +118,18 @@ class MeterViewModel: ScreenModel {
         screenModelScope.launch {
             val curThemePref = PreferenceUtil.getString(KEY_SETTING_THEME, ThemeSetting.HORSE.key)
             val curTheme = ThemeSetting.fromKey(curThemePref)
-            val animationIcons = when(curTheme) {
-                ThemeSetting.HORSE -> ANIMATION_ICONS_HORSE
-                ThemeSetting.CIRCLE -> ANIMATION_ICONS_CIRCLE
+            when(curTheme) {
+                ThemeSetting.HORSE -> {
+                    meterAnimationFrameDurations = ANIMATION_FRAME_DURATION_HORSE
+                    meterAnimationIcons = ANIMATION_ICONS_HORSE
+                }
+                ThemeSetting.CIRCLE -> {
+                    meterAnimationFrameDurations = ANIMATION_FRAME_DURATION_CIRCLE
+                    meterAnimationIcons = ANIMATION_ICONS_CIRCLE
+                }
             }
 
-            _uiState.update { it.copy(meterAnimationIcons = animationIcons) }
+            _uiState.update { it.copy(meterAnimationIcons = meterAnimationIcons) }
         }
     }
 
@@ -160,6 +185,7 @@ class MeterViewModel: ScreenModel {
 
             while(true) {
                 increaseCost()
+                updateMeterAnimation()
                 delay(METER_UPDATE_INTERVAL)
             }
         }
@@ -323,5 +349,14 @@ class MeterViewModel: ScreenModel {
         }
 
         _uiState.update { it.copy(curCost = newBaseCost.toInt()) }
+    }
+
+    private fun updateMeterAnimation() {
+        val curSpeed = uiState.value.curSpeed
+
+        val meterAnimationFrameDurationMillis = meterAnimationFrameDurations.find { curSpeed > it.first }?.second
+            ?: meterAnimationFrameDurations.last().second
+
+        _uiState.update { it.copy(meterAnimationDurationMillis = meterAnimationFrameDurationMillis) }
     }
 }
