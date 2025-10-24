@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import com.yong.taximeter.common.model.CostMode
+import com.yong.taximeter.common.ui.IconAnimation
 import com.yong.taximeter.common.ui.MeterColor
 import com.yong.taximeter.common.ui.ShowSnackBar
 import org.jetbrains.compose.resources.DrawableResource
@@ -97,13 +98,17 @@ object MeterScreen: Screen {
         val isNightPerc = uiState.isNightPerc
         val isOutCityPerc = uiState.isOutCityPerc
 
+        val meterAnimationDurationMillis = uiState.meterAnimationDurationMillis
+        val meterAnimationIcons = uiState.meterAnimationIcons
+
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.Bottom,
         ) {
             MeterRunnerIcon(
                 modifier = Modifier,
-                iconResList = emptyList(),
+                meterRunnerDurationMillis = meterAnimationDurationMillis,
+                meterRunnerIcons = meterAnimationIcons,
             )
 
             MeterCost(
@@ -135,14 +140,14 @@ object MeterScreen: Screen {
     @Composable
     private fun MeterRunnerIcon(
         modifier: Modifier = Modifier,
-        iconResList: List<DrawableResource>,
+        meterRunnerDurationMillis: Int,
+        meterRunnerIcons: List<DrawableResource>,
     ) {
-        // TODO: Meter Runner Icon UI 구현
-        Box(
+        IconAnimation(
             modifier = modifier,
-        ) {
-            Text("Meter Runner Iconß")
-        }
+            animationDuration = meterRunnerDurationMillis,
+            iconResList = meterRunnerIcons,
+        )
     }
 
     @Composable
