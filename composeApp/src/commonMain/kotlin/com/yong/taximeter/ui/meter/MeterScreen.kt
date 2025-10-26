@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Scaffold
@@ -143,11 +144,18 @@ object MeterScreen: Screen {
         meterRunnerDurationMillis: Int,
         meterRunnerIcons: List<DrawableResource>,
     ) {
-        IconAnimation(
-            modifier = modifier,
-            animationDuration = meterRunnerDurationMillis,
-            iconResList = meterRunnerIcons,
-        )
+        Box(
+            modifier = modifier
+                .fillMaxWidth(),
+            contentAlignment = Alignment.CenterEnd,
+        ) {
+            IconAnimation(
+                modifier = modifier
+                    .size(84.dp),
+                animationDuration = meterRunnerDurationMillis,
+                iconResList = meterRunnerIcons,
+            )
+        }
     }
 
     @Composable
