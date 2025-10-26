@@ -352,7 +352,11 @@ class MeterViewModel: ScreenModel {
     }
 
     private fun updateMeterAnimation() {
-        val curSpeed = uiState.value.curSpeed
+        val curSpeed = uiState.value.curSpeed.toInt()
+        if(curSpeed <= 0) {
+            _uiState.update { it.copy(meterAnimationDurationMillis = 0) }
+            return
+        }
 
         val meterAnimationFrameDurationMillis = meterAnimationFrameDurations.find { curSpeed > it.first }?.second
             ?: meterAnimationFrameDurations.last().second
