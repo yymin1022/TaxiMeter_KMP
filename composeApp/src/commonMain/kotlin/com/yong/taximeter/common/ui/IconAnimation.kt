@@ -22,6 +22,8 @@ fun IconAnimation(
     animationDuration: Int,
     iconResList: List<DrawableResource>,
 ) {
+    if(iconResList.isEmpty()) return
+
     val animationValue by if(animationDuration > 0) {
         val transition = rememberInfiniteTransition(
             label = "icon_animation_transition"
