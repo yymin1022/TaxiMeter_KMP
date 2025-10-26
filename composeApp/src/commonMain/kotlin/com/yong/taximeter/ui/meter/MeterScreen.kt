@@ -18,6 +18,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ import com.yong.taximeter.common.model.CostMode
 import com.yong.taximeter.common.ui.IconAnimation
 import com.yong.taximeter.common.ui.MeterColor
 import com.yong.taximeter.common.ui.ShowSnackBar
+import com.yong.taximeter.common.ui.SystemUiThemeUtil
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
@@ -51,6 +53,14 @@ object MeterScreen: Screen {
     override fun Content() {
         val viewModel: MeterViewModel = getScreenModel()
         val uiState = viewModel.uiState.collectAsState()
+
+        DisposableEffect(Unit) {
+            SystemUiThemeUtil.setSystemUiTheme(isDark = true)
+
+            onDispose {
+                SystemUiThemeUtil.setSystemUiTheme(isDark = false)
+            }
+        }
 
         val snackBarHostState = remember { SnackbarHostState() }
         val snackBarMessageRes = uiState.value.snackBarMessageRes
