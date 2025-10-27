@@ -1,10 +1,12 @@
 package com.yong.taximeter.common.ui
 
+import androidx.compose.runtime.Composable
 import androidx.core.view.WindowCompat
 import com.yong.taximeter.TaxiMeterApplication
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual object SystemUiThemeUtil {
+    @Composable
     actual fun setSystemUiTheme(isDark: Boolean) {
         val activity = TaxiMeterApplication.currentActivity?.get() ?: return
 
