@@ -33,7 +33,6 @@ import com.yong.taximeter.common.model.CostMode
 import com.yong.taximeter.common.ui.IconAnimation
 import com.yong.taximeter.common.ui.MeterColor
 import com.yong.taximeter.common.ui.ShowSnackBar
-import com.yong.taximeter.common.ui.SystemUiThemeUtil
 import com.yong.taximeter.common.ui.SystemUiThemeUtil.rememberSystemUiThemeSetter
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
@@ -56,6 +55,8 @@ object MeterScreen: Screen {
         val uiState = viewModel.uiState.collectAsState()
 
         // System UI Theme 지정 / 해제
+        // - Meter 화면 진입 시, Dark로 지정
+        // - Meter 화면 Dispose 시, Dark 해제
         val systemUiThemeSetting = rememberSystemUiThemeSetter()
         DisposableEffect(Unit) {
             systemUiThemeSetting(true)
@@ -65,6 +66,9 @@ object MeterScreen: Screen {
             }
         }
 
+        // Snack Bar 표시 관련 State, Composable
+        // - UI State로부터 업데이트된 메시지를 받아 Snack Bar를 표시한다
+        // - 표시한 뒤에는 Snack Bar 메시지 UI State 초기화를 호출한다
         val snackBarHostState = remember { SnackbarHostState() }
         val snackBarMessageRes = uiState.value.snackBarMessageRes
         ShowSnackBar(
@@ -73,6 +77,7 @@ object MeterScreen: Screen {
             dismissSnackBar = viewModel::dismissSnackBar,
         )
 
+        // Meter UI
         Scaffold(
             modifier = Modifier
                 .fillMaxSize(),
@@ -101,36 +106,44 @@ object MeterScreen: Screen {
         onClickNightPerc: () -> Unit,
         onClickOutCityPerc: (isEnabled: Boolean) -> Unit,
     ) {
+        // 요금 관련 UI State
         val curCost = uiState.curCost
         val curCounter = uiState.curCounter
 
+        // 주행 정보 관련 UI State
         val curCostMode = uiState.curCostMode
         val curDistance = uiState.curDistance
         val curSpeed = uiState.curSpeed
         val isDriving = uiState.isDriving
 
+        // 할증 관련 UI State
         val isNightPerc = uiState.isNightPerc
         val isOutCityPerc = uiState.isOutCityPerc
 
+        // 애니메이션 관련 UI State
         val meterAnimationDurationMillis = uiState.meterAnimationDurationMillis
         val meterAnimationIcons = uiState.meterAnimationIcons
 
+        // 전체 UI를 Column으로 배치
         Column(
             modifier = modifier,
             verticalArrangement = Arrangement.Bottom,
         ) {
+            // Meter 애니메이션
             MeterRunnerIcon(
                 modifier = Modifier,
                 meterRunnerDurationMillis = meterAnimationDurationMillis,
                 meterRunnerIcons = meterAnimationIcons,
             )
 
+            // Meter 요금 정보
             MeterCost(
                 modifier = Modifier,
                 curCost = curCost,
                 curCounter = curCounter,
             )
 
+            // Meter 주행 정보
             MeterStatus(
                 modifier = Modifier,
                 curCostMode = curCostMode,
@@ -139,6 +152,7 @@ object MeterScreen: Screen {
                 isDriving = isDriving,
             )
 
+            // Meter 제어 UI
             MeterControl(
                 modifier = Modifier,
                 isNightPerc = isNightPerc,
@@ -151,6 +165,9 @@ object MeterScreen: Screen {
         }
     }
 
+    /**
+     * Meter 애니메이션
+     */
     @Composable
     private fun MeterRunnerIcon(
         modifier: Modifier = Modifier,
@@ -171,6 +188,9 @@ object MeterScreen: Screen {
         }
     }
 
+    /**
+     * Meter 요금 정보
+     */
     @Composable
     private fun MeterCost(
         modifier: Modifier = Modifier,
@@ -185,13 +205,13 @@ object MeterScreen: Screen {
                 .padding(all = 12.dp),
             horizontalAlignment = Alignment.End,
         ) {
-            // Cost Text
+            // Meter 요즘 정보 Text
             MeterCostText(
                 modifier = Modifier,
                 costStr = costStr,
             )
 
-            // Counter Text
+            // Meter 요금 Counter Text
             MeterCounterText(
                 modifier = Modifier,
                 counterStr = curCounter.toString(),
@@ -199,6 +219,9 @@ object MeterScreen: Screen {
         }
     }
 
+    /**
+     * Meter 요금 정보 Text
+     */
     @Composable
     private fun MeterCostText(
         modifier: Modifier = Modifier,
@@ -217,6 +240,9 @@ object MeterScreen: Screen {
         }
     }
 
+    /**
+     * Meter 요금 Counter Text
+     */
     @Composable
     private fun MeterCounterText(
         modifier: Modifier = Modifier,
@@ -235,6 +261,12 @@ object MeterScreen: Screen {
         }
     }
 
+    /**
+     * Meter 주행 정보
+     * - 4개 주행 정보 2x2 Column-Row로 표시
+     * - 주행 상태 / 주행 속도
+     * - 요금 모드 / 주행 거리
+     */
     @Composable
     private fun MeterStatus(
         modifier: Modifier = Modifier,
@@ -243,20 +275,28 @@ object MeterScreen: Screen {
         curSpeed: Float,
         isDriving: Boolean,
     ) {
+        // 거리 정보와 속도 정보는 반올림하여 UI에 표시한다
+        // - 각각 km, km/h 단위로 환산
+        // - 소수점 아래 1자리까지 표시
         val curDistanceRound = round(curDistance * 10) / 10
         val curSpeedRound = round(curSpeed * 10) / 10
 
+        // 요금 모드 정보
         val costModeTitle = stringResource(Res.string.meter_status_cost_mode_title)
         val costModeDesc = stringResource(curCostMode.msgRes)
+        // 주행 거리 정보
         val distanceTitle = stringResource(Res.string.meter_status_distance_title)
         val distanceDesc = stringResource(Res.string.meter_status_distance_desc, curDistanceRound)
+        // 주행 상태 정보
         val driveStatusTitle = stringResource(Res.string.meter_status_drive_status_title)
         val driveStatusDesc = stringResource(
             if(isDriving) Res.string.meter_status_drive_status_desc_true
                     else Res.string.meter_status_drive_status_desc_false)
+        // 주행 속도 정보
         val speedTitle = stringResource(Res.string.meter_status_speed_title)
         val speedDesc = stringResource(Res.string.meter_status_speed_desc, curSpeedRound)
 
+        // 2x2 Column-Row로 표시
         Row(
             modifier = modifier
                 .fillMaxWidth()
@@ -267,7 +307,7 @@ object MeterScreen: Screen {
                     .weight(1f)
                     .padding(horizontal = 12.dp),
             ) {
-                // Drive Status
+                // 주행 상태 정보
                 MeterStatusText(
                     modifier = Modifier,
                     title = driveStatusTitle,
@@ -275,7 +315,8 @@ object MeterScreen: Screen {
                     isLeftAlign = false,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                // Cost Mode Status
+
+                // 요금 모드 정보
                 MeterStatusText(
                     modifier = Modifier,
                     title = costModeTitle,
@@ -289,14 +330,15 @@ object MeterScreen: Screen {
                     .weight(1f)
                     .padding(horizontal = 12.dp),
             ) {
-                // Speed Status
+                // 주행 속도 정보
                 MeterStatusText(
                     modifier = Modifier,
                     title = speedTitle,
                     desc = speedDesc,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                // Distance Status
+
+                // 주행 거리 정보
                 MeterStatusText(
                     modifier = Modifier,
                     title = distanceTitle,
@@ -306,6 +348,9 @@ object MeterScreen: Screen {
         }
     }
 
+    /**
+     * Meter 주행 관련 정보 Text
+     */
     @Composable
     private fun MeterStatusText(
         modifier: Modifier = Modifier,
@@ -318,14 +363,14 @@ object MeterScreen: Screen {
                 .fillMaxWidth(),
             horizontalAlignment = if(isLeftAlign) Alignment.Start else Alignment.End,
         ) {
-            // Title Text
+            // 주행 관련 정보 Title Text
             Text(
                 text = title,
                 color = MeterColor.MeterTextColorWhite,
                 fontSize = 20.sp,
             )
 
-            // Description Text
+            // 주행 관련 정보 Description Text
             Text(
                 text = desc,
                 color = MeterColor.MeterTextColorWhite,
@@ -334,6 +379,12 @@ object MeterScreen: Screen {
         }
     }
 
+    /**
+     * Meter 제어 UI
+     * - 4개 Button을 2x2 Column-Row로 표시
+     * - 주행 시작 / 주행 종료
+     * - 야간 할증 / 시외 할증
+     */
     @Composable
     private fun MeterControl(
         modifier: Modifier = Modifier,
@@ -344,6 +395,7 @@ object MeterScreen: Screen {
         onClickNightPerc: () -> Unit,
         onClickOutCityPerc: (isEnabled: Boolean) -> Unit,
     ) {
+        // 2x2 Column-Row로 표시
         Column(
             modifier = modifier
                 .padding(vertical = 4.dp),
@@ -352,7 +404,7 @@ object MeterScreen: Screen {
                 modifier = Modifier
                     .fillMaxWidth(),
             ) {
-                // Start Driving
+                // 주행 시작 Button
                 MeterControlButton(
                     modifier = Modifier
                         .weight(1f),
@@ -360,7 +412,7 @@ object MeterScreen: Screen {
                     text = "Start Driving",
                     onClick = startDriving,
                 )
-                // Stop Driving
+                // 주행 종료 Button
                 MeterControlButton(
                     modifier = Modifier
                         .weight(1f),
@@ -374,7 +426,7 @@ object MeterScreen: Screen {
                 modifier = Modifier
                     .fillMaxWidth(),
             ) {
-                // Night Percentage
+                // 야간 할증 Button
                 MeterControlButton(
                     modifier = Modifier
                         .weight(1f),
@@ -382,7 +434,7 @@ object MeterScreen: Screen {
                     text = "Night [$isNightPerc]",
                     onClick = onClickNightPerc,
                 )
-                // OutCity Percentage
+                // 시외 할증 Button
                 MeterControlButton(
                     modifier = Modifier
                         .weight(1f),
@@ -394,6 +446,9 @@ object MeterScreen: Screen {
         }
     }
 
+    /**
+     * Meter 제어 Button
+     */
     @Composable
     private fun MeterControlButton(
         modifier: Modifier = Modifier,
@@ -402,6 +457,7 @@ object MeterScreen: Screen {
         text: String,
         onClick: () -> Unit = {},
     ) {
+        // Button에 지정된 색상과 Text 표시
         Button(
             modifier = modifier
                 .padding(horizontal = 4.dp, vertical = 4.dp),
