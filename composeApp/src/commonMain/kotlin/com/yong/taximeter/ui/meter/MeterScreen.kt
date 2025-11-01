@@ -34,6 +34,7 @@ import com.yong.taximeter.common.ui.IconAnimation
 import com.yong.taximeter.common.ui.MeterColor
 import com.yong.taximeter.common.ui.ShowSnackBar
 import com.yong.taximeter.common.ui.SystemUiThemeUtil
+import com.yong.taximeter.common.ui.SystemUiThemeUtil.rememberSystemUiThemeSetter
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
@@ -54,11 +55,13 @@ object MeterScreen: Screen {
         val viewModel: MeterViewModel = getScreenModel()
         val uiState = viewModel.uiState.collectAsState()
 
+        // System UI Theme 지정 / 해제
+        val systemUiThemeSetting = rememberSystemUiThemeSetter()
         DisposableEffect(Unit) {
-            SystemUiThemeUtil.setSystemUiTheme(isDark = true)
+            systemUiThemeSetting(true)
 
             onDispose {
-                SystemUiThemeUtil.setSystemUiTheme(isDark = false)
+                systemUiThemeSetting(false)
             }
         }
 
