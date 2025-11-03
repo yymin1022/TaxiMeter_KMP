@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -29,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
 import com.yong.taximeter.common.model.CostMode
 import com.yong.taximeter.common.ui.IconAnimation
 import com.yong.taximeter.common.ui.MeterColor
@@ -51,6 +56,9 @@ import kotlin.math.round
 object MeterScreen: Screen {
     @Composable
     override fun Content() {
+        val navigator = LocalNavigator.current ?: return
+        val navigatorPop: () -> Unit = { navigator.pop() }
+
         val viewModel: MeterViewModel = getScreenModel()
         val uiState = viewModel.uiState.collectAsState()
 
@@ -94,6 +102,34 @@ object MeterScreen: Screen {
                 onClickNightPerc = viewModel::showNightPercInfo,
                 onClickOutCityPerc = viewModel::updateOutCityPerc,
             )
+        }
+
+        MeterBackButton(
+            modifier = Modifier,
+            onBackClick = navigatorPop,
+        )
+    }
+
+    @Composable
+    private fun MeterBackButton(
+        modifier: Modifier = Modifier,
+        onBackClick: () -> Unit,
+    ) {
+        Box(
+            modifier = modifier,
+            contentAlignment = Alignment.TopStart,
+        ) {
+            IconButton(
+                modifier = Modifier
+                    .padding(8.dp),
+                onClick = onBackClick,
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    tint = Color.White,
+                    contentDescription = null
+                )
+            }
         }
     }
 
