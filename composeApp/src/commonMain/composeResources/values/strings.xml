@@ -2,6 +2,10 @@
     <!-- Common -->
     <string name="app_name">Taxi Meter</string>
 
+    <!-- Common Dialog -->
+    <string name="common_dialog_cancel">Cancel</string>
+    <string name="common_dialog_confirm">Confirm</string>
+
     <!-- Main Tab Title -->
     <string name="tab_title_home">Home</string>
     <string name="tab_title_setting">Setting</string>
