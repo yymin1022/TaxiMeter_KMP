@@ -24,7 +24,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,10 +42,13 @@ import com.yong.taximeter.common.ui.IconAnimation
 import com.yong.taximeter.common.ui.MeterColor
 import com.yong.taximeter.common.ui.ShowSnackBar
 import com.yong.taximeter.common.ui.SystemUiThemeUtil.rememberSystemUiThemeSetter
+import com.yong.taximeter.common.ui.dialog.BasicDialog
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
 import taximeter.composeapp.generated.resources.meter_cost_text
+import taximeter.composeapp.generated.resources.meter_exit_dialog_description
+import taximeter.composeapp.generated.resources.meter_exit_dialog_title
 import taximeter.composeapp.generated.resources.meter_status_cost_mode_title
 import taximeter.composeapp.generated.resources.meter_status_distance_desc
 import taximeter.composeapp.generated.resources.meter_status_distance_title
@@ -106,15 +112,29 @@ object MeterScreen: Screen {
 
         MeterBackButton(
             modifier = Modifier,
-            onBackClick = navigatorPop,
+            goBack = navigatorPop,
         )
     }
 
     @Composable
     private fun MeterBackButton(
         modifier: Modifier = Modifier,
-        onBackClick: () -> Unit,
+        goBack: () -> Unit,
     ) {
+        var showConfirmDialog by remember { mutableStateOf(false) }
+        val onBackButtonClicked = { showConfirmDialog = true }
+        val onDialogCancel = { showConfirmDialog = false }
+        val onDialogConfirm = { goBack() }
+
+        if(showConfirmDialog) {
+            BasicDialog(
+                titleRes = Res.string.meter_exit_dialog_title,
+                descriptionRes = Res.string.meter_exit_dialog_description,
+                onConfirm = onDialogConfirm,
+                onCancel = onDialogCancel
+            )
+        }
+
         Box(
             modifier = modifier,
             contentAlignment = Alignment.TopStart,
@@ -122,7 +142,7 @@ object MeterScreen: Screen {
             IconButton(
                 modifier = Modifier
                     .padding(8.dp),
-                onClick = onBackClick,
+                onClick = onBackButtonClicked,
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,

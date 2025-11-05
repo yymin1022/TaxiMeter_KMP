@@ -24,6 +24,8 @@
     <string name="meter_cost_mode_distance">Distance based Cost</string>
     <string name="meter_cost_mode_time">Time based Cost</string>
     <string name="meter_cost_text">₩%1$d</string>
+    <string name="meter_exit_dialog_description">Driving will be stopped</string>
+    <string name="meter_exit_dialog_title">Exit Meter</string>
     <string name="meter_status_cost_mode_title">Cost Mode</string>
     <string name="meter_status_distance_title">Driven Distance</string>
     <string name="meter_status_distance_desc">%1$dkm</string>
