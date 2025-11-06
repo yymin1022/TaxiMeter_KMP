@@ -34,7 +34,7 @@
     <string name="meter_status_drive_status_desc_true">Driving...</string>
     <string name="meter_status_speed_title">Speed</string>
     <string name="meter_status_speed_desc">%1$dkm/h</string>
-    <string name="meter_snackbar_nightperc_info">Night Percentage will be will be applied automatically during the scheduled period.</string>
+    <string name="meter_snackbar_nightperc_info">Night Percentage will be applied automatically during the scheduled period.</string>
 
     <!-- Setting Dialog Title -->
     <string name="setting_dialog_title_location">Select Location</string>
