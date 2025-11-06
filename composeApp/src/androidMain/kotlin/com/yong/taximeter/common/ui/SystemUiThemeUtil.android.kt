@@ -17,7 +17,7 @@ actual object SystemUiThemeUtil {
 
         return remember(view) {
             { isDark: Boolean ->
-                val activity = view.context as Activity
+                val activity = view.context as? Activity ?: return@remember
                 val window = activity.window
                 val insetsController = WindowInsetsControllerCompat(window, window.decorView)
 
