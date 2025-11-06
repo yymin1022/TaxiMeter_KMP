@@ -46,6 +46,12 @@ import com.yong.taximeter.common.ui.dialog.BasicDialog
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.stringResource
 import taximeter.composeapp.generated.resources.Res
+import taximeter.composeapp.generated.resources.meter_control_percentage_night_disabled
+import taximeter.composeapp.generated.resources.meter_control_percentage_night_enabled
+import taximeter.composeapp.generated.resources.meter_control_percentage_outcity_disabled
+import taximeter.composeapp.generated.resources.meter_control_percentage_outcity_enabled
+import taximeter.composeapp.generated.resources.meter_control_start_driving
+import taximeter.composeapp.generated.resources.meter_control_stop_driving
 import taximeter.composeapp.generated.resources.meter_cost_text
 import taximeter.composeapp.generated.resources.meter_exit_dialog_description
 import taximeter.composeapp.generated.resources.meter_exit_dialog_title
@@ -458,6 +464,20 @@ object MeterScreen: Screen {
         onClickNightPerc: () -> Unit,
         onClickOutCityPerc: (isEnabled: Boolean) -> Unit,
     ) {
+        // 주행 시작/종료 Button Text
+        val btnTextStartDriving = stringResource(Res.string.meter_control_start_driving)
+        val btnTextStopDriving = stringResource(Res.string.meter_control_stop_driving)
+
+        // 야간/시외 할증 Button Text
+        val btnTextNightPerc = stringResource(
+            if(isNightPerc) Res.string.meter_control_percentage_night_enabled
+            else Res.string.meter_control_percentage_night_disabled
+        )
+        val btnTextOutCityPerc = stringResource(
+            if(isOutCityPerc) Res.string.meter_control_percentage_outcity_enabled
+            else Res.string.meter_control_percentage_outcity_disabled
+        )
+
         // 2x2 Column-Row로 표시
         Column(
             modifier = modifier
@@ -472,7 +492,7 @@ object MeterScreen: Screen {
                     modifier = Modifier
                         .weight(1f),
                     backgroundColor = MeterColor.MeterBlue,
-                    text = "Start Driving",
+                    text = btnTextStartDriving,
                     onClick = startDriving,
                 )
                 // 주행 종료 Button
@@ -480,7 +500,7 @@ object MeterScreen: Screen {
                     modifier = Modifier
                         .weight(1f),
                     backgroundColor = MeterColor.MeterYellow,
-                    text = "Stop Driving",
+                    text = btnTextStopDriving,
                     onClick = stopDriving,
                 )
             }
@@ -494,7 +514,7 @@ object MeterScreen: Screen {
                     modifier = Modifier
                         .weight(1f),
                     backgroundColor = MeterColor.MeterGreen,
-                    text = "Night [$isNightPerc]",
+                    text = btnTextNightPerc,
                     onClick = onClickNightPerc,
                 )
                 // 시외 할증 Button
@@ -502,7 +522,7 @@ object MeterScreen: Screen {
                     modifier = Modifier
                         .weight(1f),
                     backgroundColor = MeterColor.MeterRed,
-                    text = "OutCity [$isOutCityPerc]",
+                    text = btnTextOutCityPerc,
                     onClick = { onClickOutCityPerc(isOutCityPerc.not()) },
                 )
             }

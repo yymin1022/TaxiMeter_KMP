@@ -20,6 +20,12 @@
     <string name="home_description_distance">Drove for %1$dkm with TaxiMeter!</string>
 
     <!-- Meter -->
+    <string name="meter_control_percentage_night_disabled">Night Percentage OFF</string>
+    <string name="meter_control_percentage_night_enabled">Night Percentage ON</string>
+    <string name="meter_control_percentage_outcity_disabled">Outcity Percentage OFF</string>
+    <string name="meter_control_percentage_outcity_enabled">Outcity Percentage ON</string>
+    <string name="meter_control_start_driving">Start Driving</string>
+    <string name="meter_control_stop_driving">Stop Driving</string>
     <string name="meter_cost_mode_base">Base Cost</string>
     <string name="meter_cost_mode_distance">Distance based Cost</string>
     <string name="meter_cost_mode_time">Time based Cost</string>
