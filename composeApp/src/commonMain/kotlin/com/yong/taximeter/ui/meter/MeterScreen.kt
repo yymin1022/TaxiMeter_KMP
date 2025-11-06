@@ -268,7 +268,7 @@ object MeterScreen: Screen {
                 .padding(all = 12.dp),
             horizontalAlignment = Alignment.End,
         ) {
-            // Meter 요즘 정보 Text
+            // Meter 요금 정보 Text
             MeterCostText(
                 modifier = Modifier,
                 costStr = costStr,
