@@ -110,22 +110,28 @@ object MeterScreen: Screen {
             )
         }
 
+        // 상단 Back Button UI
         MeterBackButton(
             modifier = Modifier,
             goBack = navigatorPop,
         )
     }
 
+    /**
+     * 상단 Back Button UI
+     */
     @Composable
     private fun MeterBackButton(
         modifier: Modifier = Modifier,
         goBack: () -> Unit,
     ) {
+        // Dialog 관련 State
         var showConfirmDialog by remember { mutableStateOf(false) }
         val onBackButtonClicked = { showConfirmDialog = true }
         val onDialogCancel = { showConfirmDialog = false }
         val onDialogConfirm = { goBack() }
 
+        // State에 따라 Dialog 표시
         if(showConfirmDialog) {
             BasicDialog(
                 titleRes = Res.string.meter_exit_dialog_title,
@@ -135,6 +141,7 @@ object MeterScreen: Screen {
             )
         }
 
+        // Back Button Icon
         Box(
             modifier = modifier,
             contentAlignment = Alignment.TopStart,
