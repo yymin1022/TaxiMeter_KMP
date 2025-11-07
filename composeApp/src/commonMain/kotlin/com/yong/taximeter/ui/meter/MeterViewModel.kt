@@ -38,6 +38,9 @@ import taximeter.composeapp.generated.resources.meter_snackbar_nightperc_info
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+/**
+ * Meter UI State
+ */
 data class MeterUiState(
     val curCost: Int = 0,
     val curCostMode: CostMode = CostMode.MODE_BASE,
@@ -57,11 +60,14 @@ data class MeterUiState(
 
 class MeterViewModel: ScreenModel {
     companion object {
+        // 거리요금 - 시간요금 기준 속도
         private const val METER_SPEED_COST_THRESHOLD_KMH = 15f
-
+        // Cost 업데이트 관련 기준 값
+        // - 업데이트 주기
         private const val METER_UPDATE_INTERVAL = 1000L
+        // - 기준 시간 초기값
         private const val METER_UPDATE_NEED_INIT = -1L
-
+        // Animation Resource
         private val ANIMATION_ICONS_HORSE = listOf(
             Res.drawable.ic_horse_1,
             Res.drawable.ic_horse_2,
@@ -78,7 +84,7 @@ class MeterViewModel: ScreenModel {
             Res.drawable.ic_circle_7,
             Res.drawable.ic_circle_8,
         )
-
+        // Animation Frame Duration
         private val ANIMATION_FRAME_DURATION_CIRCLE = listOf(
             50f to 104,
             30f to 160,
@@ -95,26 +101,34 @@ class MeterViewModel: ScreenModel {
         )
     }
 
+    // UI State
     private val _uiState = MutableStateFlow(MeterUiState())
     val uiState = _uiState.asStateFlow()
 
+    // Cost Info
     private lateinit var costInfo: CostInfo
 
+    // Meter 동작 Coroutine Job
     private var meterDriveJob: Job? = null
-    private var lastUpdateTimeMillis: Long = -1L
+    // Meter 업데이트 기준 시간
+    private var lastUpdateTimeMillis: Long = METER_UPDATE_NEED_INIT
 
+    // Animation 정보
     private lateinit var meterAnimationFrameDurations: List<Pair<Float, Int>>
     private lateinit var meterAnimationIcons: List<DrawableResource>
 
     init {
+        // Preference의 Location 정보로 요금 정보 초기화
         screenModelScope.launch {
             val curLocationPref = PreferenceUtil.getString(KEY_SETTING_LOCATION, "")
             val curLocation = LocationSetting.fromKey(curLocationPref)
             this@MeterViewModel.costInfo = CostUtil.getCostForLocation(curLocation)
 
+            // 요금 정보 초기화
             setCostInitialState(false)
         }
 
+        // Preference의 Theme 정보로 Animation 정보 초기화
         screenModelScope.launch {
             val curThemePref = PreferenceUtil.getString(KEY_SETTING_THEME, ThemeSetting.HORSE.key)
             val curTheme = ThemeSetting.fromKey(curThemePref)
@@ -133,35 +147,44 @@ class MeterViewModel: ScreenModel {
         }
     }
 
+    // 주행 시작
     fun startDriving() {
         if(uiState.value.isDriving.not()) {
             startDriveJob()
         }
     }
 
+    // 주행 종료
     fun stopDriving() {
         if(uiState.value.isDriving) {
             screenModelScope.launch {
+                // Meter 동작 종료
                 meterDriveJob?.cancelAndJoin()
+                // 요금 정보 초기화
                 setCostInitialState(false)
             }
 
         }
     }
 
+    // 야간 할증 정보 표시
     fun showNightPercInfo() {
         _uiState.update { it.copy(snackBarMessageRes = Res.string.meter_snackbar_nightperc_info) }
     }
 
+    // 시외 할증 활성화 정보 업데이트
     fun updateOutCityPerc(isEnabled: Boolean) {
         _uiState.update { it.copy(isOutCityPerc = isEnabled) }
     }
 
+    // Snack Bar 초기화
     fun dismissSnackBar() {
         _uiState.update { it.copy(snackBarMessageRes = null) }
     }
 
+    // 요금 정보 초기화
     private fun setCostInitialState(isDriving: Boolean) {
+        // 업데이트 기준 시간을 초기값으로 지정
         lastUpdateTimeMillis = METER_UPDATE_NEED_INIT
 
         _uiState.update {
@@ -178,19 +201,26 @@ class MeterViewModel: ScreenModel {
         }
     }
 
+    // Meter 동작 시작
     private fun startDriveJob() {
         this.meterDriveJob = screenModelScope.launch(Dispatchers.Default) {
+            // 요금 정보 초기화
             setCostInitialState(isDriving = true)
+            // 기본 요금에 야간 할증 정보 반영
             updateBaseCostIfNightPerc()
 
             while(true) {
+                // 요금 정보 업데이트
                 increaseCost()
+                // Animation 업데이트
                 updateMeterAnimation()
+                // 일정 시간 대기
                 delay(METER_UPDATE_INTERVAL)
             }
         }
     }
 
+    // 요금 정보 업데이트
     @OptIn(ExperimentalTime::class)
     private fun increaseCost() {
         // 현재 SystemTime Instant
@@ -316,6 +346,7 @@ class MeterViewModel: ScreenModel {
         }
     }
 
+    // 야간 할증 1단계 적용 여부
     private fun isNightPercStep1(curHour: Int): Boolean {
         val nightPercFrom = costInfo.percNight1From
         val nightPercTo = costInfo.percNight1To
@@ -323,6 +354,7 @@ class MeterViewModel: ScreenModel {
             || (curHour <= 6 && curHour < nightPercTo))
     }
 
+    // 야간 할증 2단계 적용 여부
     private fun isNightPercStep2(curHour: Int): Boolean {
         val nightPercFrom = costInfo.percNight2From
         val nightPercTo = costInfo.percNight2To
@@ -330,6 +362,7 @@ class MeterViewModel: ScreenModel {
                 || (curHour <= 6 && curHour < nightPercTo))
     }
 
+    // 기본 요금에 야간 할증 정보 반영
     @OptIn(ExperimentalTime::class)
     private fun updateBaseCostIfNightPerc() {
         val curTimeZone = TimeZone.currentSystemDefault()
@@ -351,13 +384,16 @@ class MeterViewModel: ScreenModel {
         _uiState.update { it.copy(curCost = newBaseCost.toInt()) }
     }
 
+    // Animation 업데이트
     private fun updateMeterAnimation() {
+        // 현재 속도 정보
         val curSpeed = uiState.value.curSpeed.toInt()
         if(curSpeed <= 0) {
             _uiState.update { it.copy(meterAnimationDurationMillis = 0) }
             return
         }
 
+        // Frame Duration 계산
         val meterAnimationFrameDurationMillis = meterAnimationFrameDurations.find { curSpeed > it.first }?.second
             ?: meterAnimationFrameDurations.last().second
 
