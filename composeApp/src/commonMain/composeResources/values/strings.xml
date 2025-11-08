@@ -2,6 +2,10 @@
     <!-- Common -->
     <string name="app_name">Taxi Meter</string>
 
+    <!-- Common Dialog -->
+    <string name="common_dialog_cancel">Cancel</string>
+    <string name="common_dialog_confirm">Confirm</string>
+
     <!-- Main Tab Title -->
     <string name="tab_title_home">Home</string>
     <string name="tab_title_setting">Setting</string>
@@ -14,6 +18,29 @@
     <!-- Main Home Title Description -->
     <string name="home_description_default">Touch to Start</string>
     <string name="home_description_distance">Drove for %1$dkm with TaxiMeter!</string>
+
+    <!-- Meter -->
+    <string name="meter_control_percentage_night_disabled">Night Percentage OFF</string>
+    <string name="meter_control_percentage_night_enabled">Night Percentage ON</string>
+    <string name="meter_control_percentage_outcity_disabled">Outcity Percentage OFF</string>
+    <string name="meter_control_percentage_outcity_enabled">Outcity Percentage ON</string>
+    <string name="meter_control_start_driving">Start Driving</string>
+    <string name="meter_control_stop_driving">Stop Driving</string>
+    <string name="meter_cost_mode_base">Base Cost</string>
+    <string name="meter_cost_mode_distance">Distance based Cost</string>
+    <string name="meter_cost_mode_time">Time based Cost</string>
+    <string name="meter_cost_text">₩%1$d</string>
+    <string name="meter_exit_dialog_description">Driving will be stopped</string>
+    <string name="meter_exit_dialog_title">Exit Meter</string>
+    <string name="meter_status_cost_mode_title">Cost Mode</string>
+    <string name="meter_status_distance_title">Driven Distance</string>
+    <string name="meter_status_distance_desc">%1$dkm</string>
+    <string name="meter_status_drive_status_title">Drive Status</string>
+    <string name="meter_status_drive_status_desc_false">Ready to Drive</string>
+    <string name="meter_status_drive_status_desc_true">Driving...</string>
+    <string name="meter_status_speed_title">Speed</string>
+    <string name="meter_status_speed_desc">%1$dkm/h</string>
+    <string name="meter_snackbar_nightperc_info">Night Percentage will be applied automatically during the scheduled period.</string>
 
     <!-- Setting Dialog Title -->
     <string name="setting_dialog_title_location">Select Location</string>
