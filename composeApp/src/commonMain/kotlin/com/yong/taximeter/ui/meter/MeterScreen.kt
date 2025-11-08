@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -524,11 +524,11 @@ object MeterScreen: Screen {
         Button(
             modifier = modifier
                 .padding(horizontal = 4.dp, vertical = 4.dp),
-            colors = ButtonColors(
+            colors = ButtonDefaults.buttonColors(
                 containerColor = backgroundColor,
                 contentColor = textColor,
                 disabledContainerColor = backgroundColor,
-                disabledContentColor = MeterColor.BtnTextDisabled,
+                disabledContentColor = MeterColor.BtnTextDisabled
             ),
             onClick = onClick,
         ) {
