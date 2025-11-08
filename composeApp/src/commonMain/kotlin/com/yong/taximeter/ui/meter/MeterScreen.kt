@@ -243,7 +243,7 @@ object MeterScreen: Screen {
             contentAlignment = Alignment.CenterEnd,
         ) {
             IconAnimation(
-                modifier = modifier
+                modifier = Modifier
                     .size(84.dp),
                 animationDuration = meterRunnerDurationMillis,
                 iconResList = meterRunnerIcons,
