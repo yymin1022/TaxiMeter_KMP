@@ -5,6 +5,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.yong.taximeter.common.model.CostInfo
 import com.yong.taximeter.common.model.CostMode
 import com.yong.taximeter.common.util.CostUtil
+import com.yong.taximeter.common.util.LocationUtil
 import com.yong.taximeter.common.util.PreferenceUtil
 import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_LOCATION
 import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_THEME
@@ -238,9 +239,7 @@ class MeterViewModel: ScreenModel {
         val deltaTime = (curTimeMillis - lastUpdateTimeMillis).toFloat() / 1000f
 
         // 현재 GPS Speed 확인
-        // TODO: GPS 관련 구현 후 실제 현재 속도를 m/s 단위로 받아오도록 변경
-        // TODO: GPS 정확도 관련 API Check 후 UI 예외처리 필요
-        val curGpsSpeed = 0f
+        val curGpsSpeed = LocationUtil.getCurrentSpeed()
         val newSpeed = curGpsSpeed * 3.6f
 
         // 이동 거리 Update
