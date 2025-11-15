@@ -62,6 +62,7 @@ actual class LocationManager {
             didUpdateLocations.lastOrNull()?.let { location ->
                 location as CLLocation
 
+                println("Location: [${location.coordinate}] / Speed: ${location.speed}")
                 // Location 정보가 유효한 경우, State Update
                 // - 음수인 경우, Location 정보가 유효하지 않음
                 if(location.speed >= 0) {

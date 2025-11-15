@@ -39,6 +39,7 @@ actual class LocationManager(
     private val locationCallback = object: LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
             result.lastLocation?.let { location ->
+                println("Location: [${location.latitude}, ${location.longitude}] / Speed: ${location.speed}")
                 _speed.value = if(location.hasSpeed()) location.speed else 0f
             }
         }
