@@ -31,4 +31,11 @@ class TaxiMeterApplication: Application() {
             modules(appModule, platformModule)
         }
     }
+
+    override fun onTerminate() {
+        super.onTerminate()
+
+        // Location Manager Destroy
+        LocationManagerFactory.release()
+    }
 }

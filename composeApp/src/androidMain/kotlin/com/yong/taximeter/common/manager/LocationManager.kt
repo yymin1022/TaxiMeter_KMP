@@ -1,10 +1,12 @@
 package com.yong.taximeter.common.manager
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
 import androidx.annotation.RequiresPermission
+import androidx.compose.ui.graphics.vector.Path
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -15,14 +17,25 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlin.getValue
 
+// Android Context에 접근하지만,
+// Static Field인 applicationContext에 접근하므로
+// Context Leak으로부터 안전
+@SuppressLint("StaticFieldLeak")
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual object LocationManagerFactory {
-    private lateinit var context: Context
+    private var context: Context? = null
 
     fun init(context: Context) {
-        this.context = context
+        this.context = context.applicationContext
     }
-    actual fun create(): LocationManager = LocationManager(context)
+
+    fun release() {
+        this.context = null
+    }
+    actual fun create(): LocationManager? {
+        if(context == null) return null
+        return LocationManager(context!!)
+    }
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")

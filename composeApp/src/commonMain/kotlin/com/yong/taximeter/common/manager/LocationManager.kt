@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect object LocationManagerFactory {
-    fun create(): LocationManager
+    fun create(): LocationManager?
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")

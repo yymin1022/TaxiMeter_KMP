@@ -15,7 +15,7 @@ import platform.darwin.NSObject
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual object LocationManagerFactory {
-    actual fun create(): LocationManager = LocationManager()
+    actual fun create(): LocationManager? = LocationManager()
 }
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")

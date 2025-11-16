@@ -156,7 +156,7 @@ class MeterViewModel: ScreenModel {
     fun startDriving() {
         if(uiState.value.isDriving.not()) {
             // 위치정보 업데이트 시작
-            locationManager.startListening()
+            locationManager?.startListening()
             // Meter 동작 시작
             startDriveJob()
         }
@@ -167,7 +167,7 @@ class MeterViewModel: ScreenModel {
         if(uiState.value.isDriving) {
             screenModelScope.launch {
                 // 위치정보 업데이트 종료
-                locationManager.stopListening()
+                locationManager?.stopListening()
                 // Meter 동작 종료
                 meterDriveJob?.cancelAndJoin()
                 // 요금 정보 초기화
@@ -248,7 +248,7 @@ class MeterViewModel: ScreenModel {
         val deltaTime = (curTimeMillis - lastUpdateTimeMillis).toFloat() / 1000f
 
         // 현재 GPS Speed 확인
-        val curGpsSpeed = locationManager.speed.value
+        val curGpsSpeed = locationManager?.speed?.value ?: 0f
         val newSpeed = curGpsSpeed * 3.6f
 
         // 이동 거리 Update
