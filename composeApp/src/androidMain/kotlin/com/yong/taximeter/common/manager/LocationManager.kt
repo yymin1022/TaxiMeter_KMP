@@ -6,7 +6,6 @@ import android.content.Context
 import android.location.Location
 import android.os.Looper
 import androidx.annotation.RequiresPermission
-import androidx.compose.ui.graphics.vector.Path
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -74,9 +73,6 @@ actual class LocationManager(
 
                 // 이동속도 계산 (m/s)
                 val speed = distance / deltaTime
-
-                // TODO: Debug Log
-                println("Location: [${nextLocation.latitude}, ${nextLocation.longitude}] / Calculated Speed: $speed m/s")
 
                 // Speed State 업데이트
                 _speed.value = speed
