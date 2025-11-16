@@ -1,6 +1,7 @@
 package com.yong.taximeter.common.manager
 
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.useContents
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,6 +10,7 @@ import platform.CoreLocation.CLLocationManager
 import platform.CoreLocation.CLLocationManagerDelegateProtocol
 import platform.CoreLocation.kCLLocationAccuracyBestForNavigation
 import platform.Foundation.NSArray
+import platform.Foundation.timeIntervalSinceDate
 import platform.darwin.NSObject
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
@@ -49,7 +51,8 @@ actual class LocationManager {
     actual fun stopListening() {
         // Location Update 해제
         locationManager.stopUpdatingLocation()
-        // Speed 정보 초기화
+        // 저장된 정보 초기화
+        delegate.reset()
         _speed.value = 0f
     }
 
@@ -57,19 +60,46 @@ actual class LocationManager {
     private class LocationDelegate(
         val onSpeedUpdate: (Float) -> Unit
     ): NSObject(), CLLocationManagerDelegateProtocol {
+        // Location 정보 변화값 계산을 위한 직전 위치
+        private var prevLocation: CLLocation? = null
+
+        // 저장된 정보 초기화
+        fun reset() {
+            prevLocation = null
+        }
+
         @OptIn(ExperimentalForeignApi::class)
         override fun locationManager(manager: CLLocationManager, didUpdateLocations: List<*>) {
-            didUpdateLocations.lastOrNull()?.let { location ->
-                location as CLLocation
+            didUpdateLocations.lastOrNull()?.let { nextLocation ->
+                nextLocation as CLLocation
 
-                println("Location: [${location.coordinate}] / Speed: ${location.speed}")
-                // Location 정보가 유효한 경우, State Update
-                // - 음수인 경우, Location 정보가 유효하지 않음
-                if(location.speed >= 0) {
-                    onSpeedUpdate(location.speed.toFloat())
-                } else {
+                // 이전 위치가 유효하지 않은 경우, Speed 정보를 0으로 지정하고 종료
+                if(prevLocation == null) {
                     onSpeedUpdate(0f)
+                    prevLocation = nextLocation
+                    return
                 }
+
+                // 시간 Delta 계산 (Second)
+                val deltaTime = nextLocation.timestamp.timeIntervalSinceDate(prevLocation!!.timestamp)
+                if(deltaTime <= 0) return
+
+                // 이동거리 계산 (Meter)
+                val distance = nextLocation.distanceFromLocation(prevLocation!!)
+
+                // 이동속도 계산 (m/s)
+                val speed = distance / deltaTime
+
+                // TODO: Debug Log
+                nextLocation.coordinate.useContents {
+                    println("Location: [${this.latitude}, ${this.longitude}] / Calculated Speed: $speed m/s")
+                }
+
+
+                // Speed State 업데이트
+                onSpeedUpdate(speed.toFloat())
+                // 직전 위치 정보 업데이트
+                prevLocation = nextLocation
             }
         }
     }
