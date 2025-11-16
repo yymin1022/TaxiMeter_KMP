@@ -1,7 +1,10 @@
 package com.yong.taximeter.common.manager
 
+import android.Manifest
 import android.content.Context
+import android.location.Location
 import android.os.Looper
+import androidx.annotation.RequiresPermission
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -30,6 +33,9 @@ actual class LocationManager(
     private val _speed = MutableStateFlow(0f)
     actual val speed: StateFlow<Float> = _speed.asStateFlow()
 
+    // Location 정보 변화값 계산을 위한 직전 위치
+    private var prevLocation: Location? = null
+
     // GMS Fused Location Client
     private val fusedLocationClient by lazy {
         LocationServices.getFusedLocationProviderClient(context)
@@ -38,18 +44,41 @@ actual class LocationManager(
     // GMS Location Update Callback
     private val locationCallback = object: LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
-            result.lastLocation?.let { location ->
-                println("Location: [${location.latitude}, ${location.longitude}] / Speed: ${location.speed}")
-                _speed.value = if(location.hasSpeed()) location.speed else 0f
+            result.lastLocation?.let { nextLocation ->
+                // 이전 위치가 유효하지 않은 경우, Speed 정보를 0으로 지정하고 종료
+                if(prevLocation == null) {
+                    _speed.value = 0f
+                    prevLocation = nextLocation
+                    return
+                }
+
+                // 시간 Delta 계산 (Second)
+                val deltaTime = (nextLocation.time - prevLocation!!.time) / 1000.0f
+                if(deltaTime <= 0) return
+
+                // 이동거리 계산 (Meter)
+                val distance = nextLocation.distanceTo(prevLocation!!)
+
+                // 이동속도 계산 (m/s)
+                val speed = distance / deltaTime
+
+                // TODO: Debug Log
+                println("Location: [${nextLocation.latitude}, ${nextLocation.longitude}] / Calculated Speed: $speed m/s")
+
+                // Speed State 업데이트
+                _speed.value = speed
+                // 직전 위치 정보 업데이트
+                prevLocation = nextLocation
             }
         }
     }
 
     // Start Listening
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     actual fun startListening() {
         // Location Request Data
-        // - 1000ms (1s) 주기로 Location Update Request
-        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000L)
+        // - 500ms 주기로 Location Update Request
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 500L)
             .setMinUpdateIntervalMillis(500L)
             .build()
 
@@ -65,7 +94,8 @@ actual class LocationManager(
     actual fun stopListening() {
         // Location Update 해제
         fusedLocationClient.removeLocationUpdates(locationCallback)
-        // Speed 정보 초기화
+        // 저장된 정보 초기화
         _speed.value = 0f
+        prevLocation = null
     }
 }
