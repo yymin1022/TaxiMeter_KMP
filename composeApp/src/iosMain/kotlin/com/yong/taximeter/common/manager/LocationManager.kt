@@ -1,7 +1,6 @@
 package com.yong.taximeter.common.manager
 
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.cinterop.useContents
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -9,7 +8,6 @@ import platform.CoreLocation.CLLocation
 import platform.CoreLocation.CLLocationManager
 import platform.CoreLocation.CLLocationManagerDelegateProtocol
 import platform.CoreLocation.kCLLocationAccuracyBestForNavigation
-import platform.Foundation.NSArray
 import platform.Foundation.timeIntervalSinceDate
 import platform.darwin.NSObject
 
@@ -89,12 +87,6 @@ actual class LocationManager {
 
                 // 이동속도 계산 (m/s)
                 val speed = distance / deltaTime
-
-                // TODO: Debug Log
-                nextLocation.coordinate.useContents {
-                    println("Location: [${this.latitude}, ${this.longitude}] / Calculated Speed: $speed m/s")
-                }
-
 
                 // Speed State 업데이트
                 onSpeedUpdate(speed.toFloat())
