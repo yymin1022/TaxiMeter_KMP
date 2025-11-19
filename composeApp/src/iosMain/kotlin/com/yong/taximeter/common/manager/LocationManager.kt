@@ -69,7 +69,7 @@ actual class LocationManager {
         @OptIn(ExperimentalForeignApi::class)
         override fun locationManager(manager: CLLocationManager, didUpdateLocations: List<*>) {
             didUpdateLocations.lastOrNull()?.let { nextLocation ->
-                nextLocation as CLLocation
+                if(nextLocation !is CLLocation) return
 
                 // 이전 위치가 유효하지 않은 경우, Speed 정보를 0으로 지정하고 종료
                 if(prevLocation == null) {
