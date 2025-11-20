@@ -32,6 +32,22 @@ class TaxiMeterApplication: Application() {
         }
     }
 
+    override fun onLowMemory() {
+        super.onLowMemory()
+
+        // Location Manager Destroy
+        LocationManagerFactory.release()
+    }
+
+    override fun onTrimMemory(level: Int) {
+        super.onTrimMemory(level)
+
+        if(level >= TRIM_MEMORY_BACKGROUND) {
+            // Location Manager Destroy
+            LocationManagerFactory.release()
+        }
+    }
+
     override fun onTerminate() {
         super.onTerminate()
 
