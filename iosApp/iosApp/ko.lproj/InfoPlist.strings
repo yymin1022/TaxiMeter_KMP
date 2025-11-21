@@ -1,0 +1,8 @@
+//
+//  InfoPlist.strings
+//  iosApp
+//
+//  Created by 유용민 on 11/13/25.
+//
+
+"NSLocationWhenInUseUsageDescription" = "미터기 기능의 동작을 위해서는 위치정보 권한이 필요합니다.";

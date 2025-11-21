@@ -36,6 +36,9 @@ kotlin {
             // Datastore Preference
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.datastore.preferences)
+
+            // GMS Location
+            implementation(libs.play.services.location)
         }
         commonMain.dependencies {
             implementation(compose.runtime)

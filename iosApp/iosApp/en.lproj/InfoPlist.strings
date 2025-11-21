@@ -1,0 +1,8 @@
+//
+//  InfoPlist.strings
+//  iosApp
+//
+//  Created by 유용민 on 11/13/25.
+//
+
+"NSLocationWhenInUseUsageDescription" = "This app needs access to location when using meter function.";
