@@ -20,6 +20,7 @@ actual object PermissionUtil {
     }
 
     actual fun requestLocationPermission() {
-        // TODO: iOS 위치정보 권한 요청
+        val locationManager = CLLocationManager()
+        locationManager.requestWhenInUseAuthorization()
     }
 }
