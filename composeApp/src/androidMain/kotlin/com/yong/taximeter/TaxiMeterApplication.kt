@@ -4,6 +4,7 @@ import android.app.Application
 import com.revenuecat.purchases.kmp.Purchases
 import com.revenuecat.purchases.kmp.PurchasesConfiguration
 import com.yong.taximeter.common.manager.LocationManagerFactory
+import com.yong.taximeter.common.util.PermissionUtil
 import com.yong.taximeter.di.appModule
 import com.yong.taximeter.di.platformModule
 import dev.gitlive.firebase.Firebase
@@ -20,6 +21,8 @@ class TaxiMeterApplication: Application() {
 
         // Location Manager Init
         LocationManagerFactory.init(this)
+        // Permission Manager Init
+        PermissionUtil.init(this)
 
         // RevenueCat Init
         val builder = PurchasesConfiguration.Builder(Secrets.REVENUECAT_API_KEY_ANDROID)
