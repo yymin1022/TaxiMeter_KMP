@@ -6,7 +6,6 @@ import android.os.Bundle
 import com.revenuecat.purchases.kmp.Purchases
 import com.revenuecat.purchases.kmp.PurchasesConfiguration
 import com.yong.taximeter.common.manager.LocationManagerFactory
-import com.yong.taximeter.common.util.PermissionUtil
 import com.yong.taximeter.di.ActivityProvider
 import com.yong.taximeter.di.ActivityProviderImpl
 import com.yong.taximeter.di.androidModule
@@ -34,8 +33,8 @@ class TaxiMeterApplication: Application() {
 
         startKoin {
             // Common App Module init
-            androidContext(this@TaxiMeterApplication)
             modules(androidModule, appModule, platformModule)
+            androidContext(this@TaxiMeterApplication)
         }
 
         // Activity Provider 초기화
