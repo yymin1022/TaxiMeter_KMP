@@ -5,8 +5,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.yong.taximeter.common.model.CostInfo
 import com.yong.taximeter.common.model.CostMode
 import com.yong.taximeter.common.util.CostUtil
-import com.yong.taximeter.common.manager.LocationManager
-import com.yong.taximeter.common.manager.LocationManagerFactory
+import com.yong.taximeter.common.util.LocationUtil
 import com.yong.taximeter.common.util.PreferenceUtil
 import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_LOCATION
 import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_THEME
@@ -115,9 +114,6 @@ class MeterViewModel: ScreenModel {
     // Meter 업데이트 기준 시간
     private var lastUpdateTimeMillis: Long = METER_UPDATE_NEED_INIT
 
-    // 위치정보 업데이트 Manager
-    private val locationManager = LocationManagerFactory.create()
-
     // Animation 정보
     private lateinit var meterAnimationFrameDurations: List<Pair<Float, Int>>
     private lateinit var meterAnimationIcons: List<DrawableResource>
@@ -156,7 +152,7 @@ class MeterViewModel: ScreenModel {
     fun startDriving() {
         if(uiState.value.isDriving.not()) {
             // 위치정보 업데이트 시작
-            locationManager?.startListening()
+            LocationUtil.startListening()
             // Meter 동작 시작
             startDriveJob()
         }
@@ -167,7 +163,7 @@ class MeterViewModel: ScreenModel {
         if(uiState.value.isDriving) {
             screenModelScope.launch {
                 // 위치정보 업데이트 종료
-                locationManager?.stopListening()
+                LocationUtil.stopListening()
                 // Meter 동작 종료
                 meterDriveJob?.cancelAndJoin()
                 // 요금 정보 초기화
@@ -248,7 +244,7 @@ class MeterViewModel: ScreenModel {
         val deltaTime = (curTimeMillis - lastUpdateTimeMillis).toFloat() / 1000f
 
         // 현재 GPS Speed 확인
-        val curGpsSpeed = locationManager?.speed?.value ?: 0f
+        val curGpsSpeed = LocationUtil.speed.value
         val newSpeed = curGpsSpeed * 3.6f
 
         // 이동 거리 Update

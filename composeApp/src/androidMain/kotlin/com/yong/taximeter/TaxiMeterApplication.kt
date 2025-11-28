@@ -5,7 +5,6 @@ import android.app.Application
 import android.os.Bundle
 import com.revenuecat.purchases.kmp.Purchases
 import com.revenuecat.purchases.kmp.PurchasesConfiguration
-import com.yong.taximeter.common.manager.LocationManagerFactory
 import com.yong.taximeter.di.ActivityProvider
 import com.yong.taximeter.di.ActivityProviderImpl
 import com.yong.taximeter.di.androidModule
@@ -23,9 +22,6 @@ class TaxiMeterApplication: Application() {
         super.onCreate()
 
         Firebase.initialize(this)
-
-        // Location Manager Init
-        LocationManagerFactory.init(this)
 
         // RevenueCat Init
         val builder = PurchasesConfiguration.Builder(Secrets.REVENUECAT_API_KEY_ANDROID)
@@ -57,28 +53,5 @@ class TaxiMeterApplication: Application() {
             override fun onActivityResumed(a: Activity) {}
             override fun onActivitySaveInstanceState(a: Activity, b: Bundle) {}
         })
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-
-        // Location Manager Destroy
-        LocationManagerFactory.release()
-    }
-
-    override fun onTrimMemory(level: Int) {
-        super.onTrimMemory(level)
-
-        if(level >= TRIM_MEMORY_BACKGROUND) {
-            // Location Manager Destroy
-            LocationManagerFactory.release()
-        }
-    }
-
-    override fun onTerminate() {
-        super.onTerminate()
-
-        // Location Manager Destroy
-        LocationManagerFactory.release()
     }
 }

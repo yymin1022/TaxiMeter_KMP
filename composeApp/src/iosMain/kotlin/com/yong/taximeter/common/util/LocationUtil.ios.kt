@@ -1,4 +1,4 @@
-package com.yong.taximeter.common.manager
+package com.yong.taximeter.common.util
 
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,12 +12,7 @@ import platform.Foundation.timeIntervalSinceDate
 import platform.darwin.NSObject
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual object LocationManagerFactory {
-    actual fun create(): LocationManager? = LocationManager()
-}
-
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class LocationManager {
+actual object LocationUtil {
     // Speed State
     private val _speed = MutableStateFlow(0f)
     actual val speed: StateFlow<Float> = _speed.asStateFlow()
