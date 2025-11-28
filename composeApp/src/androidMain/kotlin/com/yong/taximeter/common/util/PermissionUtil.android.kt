@@ -4,27 +4,23 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.content.ContextCompat
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import kotlin.getValue
 
 @Suppress(names = ["EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING"])
-actual object PermissionUtil {
-    private var context: Context? = null
-
-    fun init(context: Context) {
-        this.context = context.applicationContext
-    }
+actual object PermissionUtil: KoinComponent {
+    // Android Context
+    private val context: Context by inject()
 
     actual fun isLocationPermissionGranted(): Boolean {
-        // Context가 초기화되지 않은 경우, Permission을 확인할 수 없다
-        val isGranted = context?.let { ctx ->
-            // ACCESS_FINE_LOCATION: 정확한 위치
-            val fineGranted = ContextCompat.checkSelfPermission(
-                ctx,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-            fineGranted
-        } ?: false
+        // ACCESS_FINE_LOCATION: 정확한 위치
+        val isFineGranted = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
 
-        return isGranted
+        return isFineGranted
     }
 
     actual fun requestLocationPermission() {

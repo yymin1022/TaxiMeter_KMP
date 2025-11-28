@@ -27,8 +27,6 @@ class TaxiMeterApplication: Application() {
 
         // Location Manager Init
         LocationManagerFactory.init(this)
-        // Permission Manager Init
-        PermissionUtil.init(this)
 
         // RevenueCat Init
         val builder = PurchasesConfiguration.Builder(Secrets.REVENUECAT_API_KEY_ANDROID)
