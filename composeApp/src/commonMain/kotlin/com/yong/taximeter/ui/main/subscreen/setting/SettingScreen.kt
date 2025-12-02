@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
-import com.yong.taximeter.common.util.UrlUtil
+import com.yong.taximeter.common.def.UrlDef
+import com.yong.taximeter.common.util.UrlLauncher
 import com.yong.taximeter.ui.main.subscreen.setting.dialog.CommonRadioListDialog
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
 import com.yong.taximeter.ui.main.subscreen.setting.model.ThemeSetting
@@ -179,26 +180,26 @@ object SettingScreen: Screen {
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_developer_blog,
-                desc = UrlUtil.URL_DEVELOPER_BLOG,
-                onClick = { UrlUtil.openUrl(UrlUtil.URL_DEVELOPER_BLOG) },
+                desc = UrlDef.URL_DEVELOPER_BLOG,
+                onClick = { UrlLauncher.openUrl(UrlDef.URL_DEVELOPER_BLOG) },
             )
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_developer_github,
-                desc = UrlUtil.URL_DEVELOPER_GITHUB,
-                onClick = { UrlUtil.openUrl(UrlUtil.URL_DEVELOPER_GITHUB) },
+                desc = UrlDef.URL_DEVELOPER_GITHUB,
+                onClick = { UrlLauncher.openUrl(UrlDef.URL_DEVELOPER_GITHUB) },
             )
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_developer_instagram,
-                desc = UrlUtil.URL_DEVELOPER_INSTAGRAM,
-                onClick = { UrlUtil.openUrl(UrlUtil.URL_DEVELOPER_INSTAGRAM) },
+                desc = UrlDef.URL_DEVELOPER_INSTAGRAM,
+                onClick = { UrlLauncher.openUrl(UrlDef.URL_DEVELOPER_INSTAGRAM) },
             )
             SettingItem(
                 modifier = Modifier,
                 titleRes = Res.string.setting_item_title_privacy_policy,
-                desc = UrlUtil.URL_PRIVACY_POLICY,
-                onClick = { UrlUtil.openUrl(UrlUtil.URL_PRIVACY_POLICY) },
+                desc = UrlDef.URL_PRIVACY_POLICY,
+                onClick = { UrlLauncher.openUrl(UrlDef.URL_PRIVACY_POLICY) },
             )
         }
     }

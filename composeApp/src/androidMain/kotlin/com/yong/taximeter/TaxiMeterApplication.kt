@@ -9,7 +9,6 @@ import com.yong.taximeter.di.ActivityProvider
 import com.yong.taximeter.di.ActivityProviderImpl
 import com.yong.taximeter.di.androidModule
 import com.yong.taximeter.di.appModule
-import com.yong.taximeter.di.platformModule
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.initialize
 import org.koin.android.ext.koin.androidContext
@@ -29,7 +28,7 @@ class TaxiMeterApplication: Application() {
 
         startKoin {
             // Common App Module init
-            modules(androidModule, appModule, platformModule)
+            modules(androidModule, appModule)
             androidContext(this@TaxiMeterApplication)
         }
 
