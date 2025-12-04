@@ -13,6 +13,7 @@ import kotlin.getValue
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual object SystemUiThemeUtil: KoinComponent {
+    // Android ActivityProvider
     private val activityProvider: ActivityProviderImpl by inject()
 
     @Composable
