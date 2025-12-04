@@ -20,6 +20,7 @@ actual object SystemUiThemeUtil: KoinComponent {
     actual fun rememberSystemUiThemeSetter(): (isDark: Boolean) -> Unit {
         return remember {
             { isDark: Boolean ->
+                // 현재 Activity에 접근해 Window 객체 확인
                 val activity = activityProvider.getCurrentActivity() ?: return@remember
                 val window = activity.window
                 val insetsController = WindowInsetsControllerCompat(window, window.decorView)
