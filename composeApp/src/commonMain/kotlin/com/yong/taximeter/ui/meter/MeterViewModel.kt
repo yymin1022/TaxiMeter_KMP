@@ -37,6 +37,7 @@ import taximeter.composeapp.generated.resources.ic_horse_1
 import taximeter.composeapp.generated.resources.ic_horse_2
 import taximeter.composeapp.generated.resources.ic_horse_3
 import taximeter.composeapp.generated.resources.meter_snackbar_nightperc_info
+import taximeter.composeapp.generated.resources.meter_snackbar_permission_error
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -158,6 +159,14 @@ class MeterViewModel: ScreenModel {
 
     // 주행 시작
     fun startDriving() {
+        // 위치권한 여부 확인
+        val isLocationPermissionGranted = isLocationPermissionGranted()
+        if(isLocationPermissionGranted.not()) {
+            // 위치권한이 허용되지 않은 경우, 경고 SnackBar
+            _uiState.update { it.copy(snackBarMessageRes = Res.string.meter_snackbar_permission_error) }
+            return
+        }
+
         if(uiState.value.isDriving.not()) {
             // 위치정보 업데이트 시작
             LocationUtil.startListening()
