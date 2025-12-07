@@ -8,6 +8,7 @@ import com.yong.taximeter.common.model.CostInfo
 import com.yong.taximeter.common.model.CostMode
 import com.yong.taximeter.common.util.CostUtil
 import com.yong.taximeter.common.util.LocationUtil
+import com.yong.taximeter.common.util.PermissionUtil
 import com.yong.taximeter.common.util.PreferenceUtil
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
 import com.yong.taximeter.ui.main.subscreen.setting.model.ThemeSetting
@@ -119,6 +120,13 @@ class MeterViewModel: ScreenModel {
     private lateinit var meterAnimationIcons: List<DrawableResource>
 
     init {
+        // 위치권한 여부 확인
+        val isLocationPermissionGranted = isLocationPermissionGranted()
+        if(isLocationPermissionGranted.not()) {
+            // 위치권한이 부여되지 않은 경우, 요청
+            requestLocationPermission()
+        }
+
         // Preference의 Location 정보로 요금 정보 초기화
         screenModelScope.launch {
             val curLocationPref = PreferenceUtil.getString(KEY_SETTING_LOCATION, "")
@@ -186,6 +194,17 @@ class MeterViewModel: ScreenModel {
     // Snack Bar 초기화
     fun dismissSnackBar() {
         _uiState.update { it.copy(snackBarMessageRes = null) }
+    }
+
+    // 위치권한 여부 확인
+    private fun isLocationPermissionGranted(): Boolean {
+        val isGranted = PermissionUtil.isLocationPermissionGranted()
+        return isGranted
+    }
+
+    // 위치권한 요청
+    private fun requestLocationPermission() {
+        PermissionUtil.requestLocationPermission()
     }
 
     // 요금 정보 초기화
