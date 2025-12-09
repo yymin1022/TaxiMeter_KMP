@@ -162,7 +162,10 @@ class MeterViewModel: ScreenModel {
         // 위치권한 여부 확인
         val isLocationPermissionGranted = isLocationPermissionGranted()
         if(isLocationPermissionGranted.not()) {
-            // 위치권한이 허용되지 않은 경우, 경고 SnackBar
+            // 위치권한이 허용되지 않은 경우, 위치권한 요청
+            // - Android의 경우, 이미 거부한 기록이 있는 등 특정 조건에서는 위치권한 요청이 이루어지지 않을 수 있다
+            requestLocationPermission()
+            // 경고 SnackBar 표시
             _uiState.update { it.copy(snackBarMessageRes = Res.string.meter_snackbar_permission_error) }
             return
         }
