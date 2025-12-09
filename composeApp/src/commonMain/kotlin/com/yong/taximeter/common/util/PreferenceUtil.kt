@@ -1,8 +1,5 @@
 package com.yong.taximeter.common.util
 
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 expect object PreferenceUtil {
     suspend fun getString(key: String, defaultValue: String): String
