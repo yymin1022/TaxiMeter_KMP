@@ -4,7 +4,7 @@ import platform.Foundation.NSUserDefaults
 import platform.Foundation.setValue
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class PreferenceManager {
+actual object PreferenceUtil {
     private val userDefaults = NSUserDefaults.standardUserDefaults
 
     actual suspend fun getString(key: String, defaultValue: String): String {

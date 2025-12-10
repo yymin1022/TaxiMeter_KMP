@@ -1,7 +1,6 @@
-package com.yong.taximeter.common.manager
+package com.yong.taximeter.common.util
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
@@ -14,33 +13,15 @@ import com.google.android.gms.location.Priority
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import kotlin.getValue
 
-// Android Context에 접근하지만,
-// Static Field인 applicationContext에 접근하므로
-// Context Leak으로부터 안전
-@SuppressLint("StaticFieldLeak")
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual object LocationManagerFactory {
-    private var context: Context? = null
+actual object LocationUtil: KoinComponent {
+    // Android Context
+    private val context: Context by inject()
 
-    fun init(context: Context) {
-        this.context = context.applicationContext
-    }
-
-    fun release() {
-        this.context = null
-    }
-    actual fun create(): LocationManager? {
-        if(context == null) return null
-        return LocationManager(context!!)
-    }
-}
-
-@Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class LocationManager(
-    private val context: Context
-) {
     // Speed State
     private val _speed = MutableStateFlow(0f)
     actual val speed: StateFlow<Float> = _speed.asStateFlow()

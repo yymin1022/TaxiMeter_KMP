@@ -4,7 +4,7 @@ import platform.Foundation.NSURL
 import platform.UIKit.UIApplication
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual class UrlLauncher {
+actual object UrlLauncher {
     actual fun openUrl(url: String) {
         val nsUrl = NSURL.URLWithString(url)
         if(nsUrl != null) {

@@ -2,14 +2,14 @@ package com.yong.taximeter.ui.meter
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.yong.taximeter.common.def.PreferenceDef.KEY_SETTING_LOCATION
+import com.yong.taximeter.common.def.PreferenceDef.KEY_SETTING_THEME
 import com.yong.taximeter.common.model.CostInfo
 import com.yong.taximeter.common.model.CostMode
 import com.yong.taximeter.common.util.CostUtil
-import com.yong.taximeter.common.manager.LocationManager
-import com.yong.taximeter.common.manager.LocationManagerFactory
+import com.yong.taximeter.common.util.LocationUtil
+import com.yong.taximeter.common.util.PermissionUtil
 import com.yong.taximeter.common.util.PreferenceUtil
-import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_LOCATION
-import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_THEME
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
 import com.yong.taximeter.ui.main.subscreen.setting.model.ThemeSetting
 import kotlinx.coroutines.Dispatchers
@@ -37,6 +37,7 @@ import taximeter.composeapp.generated.resources.ic_horse_1
 import taximeter.composeapp.generated.resources.ic_horse_2
 import taximeter.composeapp.generated.resources.ic_horse_3
 import taximeter.composeapp.generated.resources.meter_snackbar_nightperc_info
+import taximeter.composeapp.generated.resources.meter_snackbar_permission_error
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -115,14 +116,18 @@ class MeterViewModel: ScreenModel {
     // Meter 업데이트 기준 시간
     private var lastUpdateTimeMillis: Long = METER_UPDATE_NEED_INIT
 
-    // 위치정보 업데이트 Manager
-    private val locationManager = LocationManagerFactory.create()
-
     // Animation 정보
     private lateinit var meterAnimationFrameDurations: List<Pair<Float, Int>>
     private lateinit var meterAnimationIcons: List<DrawableResource>
 
     init {
+        // 위치권한 여부 확인
+        val isLocationPermissionGranted = isLocationPermissionGranted()
+        if(isLocationPermissionGranted.not()) {
+            // 위치권한이 부여되지 않은 경우, 요청
+            requestLocationPermission()
+        }
+
         // Preference의 Location 정보로 요금 정보 초기화
         screenModelScope.launch {
             val curLocationPref = PreferenceUtil.getString(KEY_SETTING_LOCATION, "")
@@ -154,9 +159,20 @@ class MeterViewModel: ScreenModel {
 
     // 주행 시작
     fun startDriving() {
+        // 위치권한 여부 확인
+        val isLocationPermissionGranted = isLocationPermissionGranted()
+        if(isLocationPermissionGranted.not()) {
+            // 위치권한이 허용되지 않은 경우, 위치권한 요청
+            // - Android의 경우, 이미 거부한 기록이 있는 등 특정 조건에서는 위치권한 요청이 이루어지지 않을 수 있다
+            requestLocationPermission()
+            // 경고 SnackBar 표시
+            _uiState.update { it.copy(snackBarMessageRes = Res.string.meter_snackbar_permission_error) }
+            return
+        }
+
         if(uiState.value.isDriving.not()) {
             // 위치정보 업데이트 시작
-            locationManager?.startListening()
+            LocationUtil.startListening()
             // Meter 동작 시작
             startDriveJob()
         }
@@ -167,7 +183,7 @@ class MeterViewModel: ScreenModel {
         if(uiState.value.isDriving) {
             screenModelScope.launch {
                 // 위치정보 업데이트 종료
-                locationManager?.stopListening()
+                LocationUtil.stopListening()
                 // Meter 동작 종료
                 meterDriveJob?.cancelAndJoin()
                 // 요금 정보 초기화
@@ -190,6 +206,17 @@ class MeterViewModel: ScreenModel {
     // Snack Bar 초기화
     fun dismissSnackBar() {
         _uiState.update { it.copy(snackBarMessageRes = null) }
+    }
+
+    // 위치권한 여부 확인
+    private fun isLocationPermissionGranted(): Boolean {
+        val isGranted = PermissionUtil.isLocationPermissionGranted()
+        return isGranted
+    }
+
+    // 위치권한 요청
+    private fun requestLocationPermission() {
+        PermissionUtil.requestLocationPermission()
     }
 
     // 요금 정보 초기화
@@ -248,7 +275,7 @@ class MeterViewModel: ScreenModel {
         val deltaTime = (curTimeMillis - lastUpdateTimeMillis).toFloat() / 1000f
 
         // 현재 GPS Speed 확인
-        val curGpsSpeed = locationManager?.speed?.value ?: 0f
+        val curGpsSpeed = LocationUtil.speed.value
         val newSpeed = curGpsSpeed * 3.6f
 
         // 이동 거리 Update

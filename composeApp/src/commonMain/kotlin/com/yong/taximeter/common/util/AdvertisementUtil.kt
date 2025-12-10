@@ -2,7 +2,7 @@ package com.yong.taximeter.common.util
 
 import com.revenuecat.purchases.kmp.Purchases
 import com.revenuecat.purchases.kmp.ktx.awaitCustomerInfo
-import com.yong.taximeter.common.util.PreferenceUtil.KEY_AD_REMOVAL
+import com.yong.taximeter.common.def.PreferenceDef.KEY_AD_REMOVAL
 import com.yong.taximeter.ui.main.subscreen.store.StoreViewModel.Companion.SKU_ID_AD_REMOVE
 
 object AdvertisementUtil {

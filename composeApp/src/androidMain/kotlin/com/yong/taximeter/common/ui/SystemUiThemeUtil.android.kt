@@ -1,23 +1,27 @@
 package com.yong.taximeter.common.ui
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.yong.taximeter.di.ActivityProviderImpl
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import kotlin.getValue
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual object SystemUiThemeUtil {
+actual object SystemUiThemeUtil: KoinComponent {
+    // Android ActivityProvider
+    private val activityProvider: ActivityProviderImpl by inject()
+
     @Composable
     actual fun rememberSystemUiThemeSetter(): (isDark: Boolean) -> Unit {
-        val view = LocalView.current
-
-        return remember(view) {
+        return remember {
             { isDark: Boolean ->
-                val activity = view.context as? Activity ?: return@remember
+                // 현재 Activity에 접근해 Window 객체 확인
+                val activity = activityProvider.getCurrentActivity() ?: return@remember
                 val window = activity.window
                 val insetsController = WindowInsetsControllerCompat(window, window.decorView)
 

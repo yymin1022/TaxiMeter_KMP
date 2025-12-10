@@ -2,11 +2,11 @@ package com.yong.taximeter.ui.main.subscreen.setting
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.yong.taximeter.common.def.PreferenceDef.KEY_SETTING_LOCATION
+import com.yong.taximeter.common.def.PreferenceDef.KEY_SETTING_THEME
 import com.yong.taximeter.common.model.CostInfo
 import com.yong.taximeter.common.util.CostUtil
 import com.yong.taximeter.common.util.PreferenceUtil
-import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_LOCATION
-import com.yong.taximeter.common.util.PreferenceUtil.KEY_SETTING_THEME
 import com.yong.taximeter.ui.main.subscreen.setting.model.LocationSetting
 import com.yong.taximeter.ui.main.subscreen.setting.model.ThemeSetting
 import kotlinx.coroutines.async
