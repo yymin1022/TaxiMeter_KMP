@@ -17,16 +17,21 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.getValue
 
+/**
+ * Location Util
+ * - Actual implementation (Android)
+ * - Listens about Location status, and get Speed as StateFlow
+ */
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
 actual object LocationUtil: KoinComponent {
-    // Android Context
+    // Android Context (Injected by Koin)
     private val context: Context by inject()
 
     // Speed State
     private val _speed = MutableStateFlow(0f)
     actual val speed: StateFlow<Float> = _speed.asStateFlow()
 
-    // Location 정보 변화값 계산을 위한 직전 위치
+    // Previous Location info for calculation
     private var prevLocation: Location? = null
 
     // GMS Fused Location Client
@@ -38,26 +43,26 @@ actual object LocationUtil: KoinComponent {
     private val locationCallback = object: LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
             result.lastLocation?.let { nextLocation ->
-                // 이전 위치가 유효하지 않은 경우, Speed 정보를 0으로 지정하고 종료
+                // If previous location info is unavailable, update it
                 if(prevLocation == null) {
                     _speed.value = 0f
                     prevLocation = nextLocation
                     return
                 }
 
-                // 시간 Delta 계산 (Second)
+                // Get delta time (Second)
                 val deltaTime = (nextLocation.time - prevLocation!!.time) / 1000.0f
                 if(deltaTime <= 0) return
 
-                // 이동거리 계산 (Meter)
+                // Get moved distance (Meter)
                 val distance = nextLocation.distanceTo(prevLocation!!)
 
-                // 이동속도 계산 (m/s)
+                // Get moving speed by Distance and Delta time (m/s)
                 val speed = distance / deltaTime
 
-                // Speed State 업데이트
+                // Update Speed State
                 _speed.value = speed
-                // 직전 위치 정보 업데이트
+                // Update Previous Location
                 prevLocation = nextLocation
             }
         }
@@ -67,7 +72,7 @@ actual object LocationUtil: KoinComponent {
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     actual fun startListening() {
         // Location Request Data
-        // - 500ms 주기로 Location Update Request
+        // - Location Update Request per 500ms
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 500L)
             .setMinUpdateIntervalMillis(500L)
             .build()
@@ -82,9 +87,9 @@ actual object LocationUtil: KoinComponent {
 
     // Stop Listening
     actual fun stopListening() {
-        // Location Update 해제
+        // Remove Location Update
         fusedLocationClient.removeLocationUpdates(locationCallback)
-        // 저장된 정보 초기화
+        // Reset saved values
         _speed.value = 0f
         prevLocation = null
     }
