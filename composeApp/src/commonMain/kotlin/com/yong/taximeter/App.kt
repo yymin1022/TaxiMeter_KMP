@@ -10,10 +10,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import com.yong.taximeter.ui.main.MainScreen
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-@Preview
 fun App() {
     MaterialTheme {
         Box(
@@ -21,9 +19,10 @@ fun App() {
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.safeDrawing)
         ) {
-            // Main UI
-            Navigator(MainScreen)
+            // Main UI Navigator
+            Navigator(
+                screen = MainScreen
+            )
         }
-
     }
 }
