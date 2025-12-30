@@ -6,15 +6,23 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.firestore.firestore
 import kotlinx.serialization.Serializable
 
+/**
+ * Cost Util
+ * - Logics about cost
+ */
 object CostUtil {
+    // Preference Key
     private const val PREF_KEY_COST_DB_VERSION = "PREF_KEY_COST_DB_VERSION"
-
+    // Default Cost DB Version
+    // - It means Local Cost DB is not updated
     private const val DEFAULT_COST_DB_VERSION = "20001022"
-
+    // Firestore instance
     private val firestore by lazy { Firebase.firestore }
 
     /**
      * Get local Cost DB Version
+     *
+     * @return Local Cost DB Version
      */
     suspend fun getCostDbVersion(): String {
         val curVersion = PreferenceUtil.getString(PREF_KEY_COST_DB_VERSION, DEFAULT_COST_DB_VERSION)
@@ -22,7 +30,10 @@ object CostUtil {
     }
 
     /**
-     * Get cost info of [location]
+     * Get cost info for specific location
+     *
+     * @param location Specific location for check cost info
+     * @return Cost info of specific location
      */
     suspend fun getCostForLocation(location: LocationSetting): CostInfo {
         val cityKey = location.key
@@ -48,6 +59,8 @@ object CostUtil {
 
     /**
      * Check if DB Update is available
+     *
+     * @return Flag value about DB update is available
      */
     suspend fun isUpdateAvailable(): Boolean {
         return try {
@@ -89,6 +102,9 @@ object CostUtil {
     }
 }
 
+/**
+ * Serializable class for Firestore CostInfo
+ */
 @Serializable
 private data class FirestoreCostInfo(
     val city: String,
