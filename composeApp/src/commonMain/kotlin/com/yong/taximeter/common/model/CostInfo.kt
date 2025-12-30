@@ -1,5 +1,9 @@
 package com.yong.taximeter.common.model
 
+/**
+ * Cost Info
+ * - Defines cost info datas for each city
+ */
 data class CostInfo(
     // 기본요금
     val costBase: Int = 4800,
