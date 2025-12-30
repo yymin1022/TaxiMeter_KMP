@@ -26,3 +26,21 @@ data class CostInfo(
     // 야간할증 2단계 종료 시간
     val percNight2To: Int = 2,
 )
+
+/**
+ * Cost Info Key
+ * - Used when map cost info and preference key
+ */
+object CostInfoKey {
+    const val COST_INFO_KEY_COST_BASE = "cost_base"
+    const val COST_INFO_KEY_DIST_BASE = "dist_base"
+    const val COST_INFO_KEY_COST_RUN_PER = "cost_run_per"
+    const val COST_INFO_KEY_COST_TIME_PER = "cost_time_per"
+    const val COST_INFO_KEY_PERC_CITY = "perc_city"
+    const val COST_INFO_KEY_PERC_NIGHT_1 = "perc_night_1"
+    const val COST_INFO_KEY_PERC_NIGHT_1_FROM = "perc_night_start_1"
+    const val COST_INFO_KEY_PERC_NIGHT_1_TO = "perc_night_end_1"
+    const val COST_INFO_KEY_PERC_NIGHT_2 = "perc_night_2"
+    const val COST_INFO_KEY_PERC_NIGHT_2_FROM = "perc_night_start_2"
+    const val COST_INFO_KEY_PERC_NIGHT_2_TO = "perc_night_end_2"
+}
