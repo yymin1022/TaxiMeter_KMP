@@ -10,6 +10,11 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.getValue
 
+/**
+ * Permission Util
+ * - Actual implementation (Android)
+ * - Check or Request Location Permission
+ */
 @Suppress(names = ["EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING"])
 actual object PermissionUtil: KoinComponent {
     // Activity Result Code
@@ -20,8 +25,14 @@ actual object PermissionUtil: KoinComponent {
     // Android Context
     private val context: Context by inject()
 
+    /**
+     * Check if location permission is granted
+     * - Actual implementation (Android)
+     *
+     * @return Flag value about location permission is granted
+     */
     actual fun isLocationPermissionGranted(): Boolean {
-        // ACCESS_FINE_LOCATION: 정확한 위치
+        // ACCESS_FINE_LOCATION: Highest Accuracy Location Permission for Android
         val isFineGranted = ContextCompat.checkSelfPermission(
             context,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -30,11 +41,16 @@ actual object PermissionUtil: KoinComponent {
         return isFineGranted
     }
 
+    /**
+     * Request for location permission
+     * - Actual implementation (Android)
+     */
     actual fun requestLocationPermission() {
-        val activity = activityProvider.getCurrentActivity() ?: return
-        // 이미 권한이 있으면 굳이 다시 요청할 필요 없음
-        if (isLocationPermissionGranted()) return
+        // If already granted, skip logic
+        if(isLocationPermissionGranted()) return
 
+        // Launch permission request
+        val activity = activityProvider.getCurrentActivity() ?: return
         ActivityCompat.requestPermissions(
             activity,
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
