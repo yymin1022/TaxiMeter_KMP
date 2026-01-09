@@ -38,14 +38,20 @@ actual object LocationUtil {
         locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
     }
 
-    // Start Listening
+    /**
+     * Start Listening for Location Update
+     * - Actual implementation (iOS)
+     */
     actual fun startListening() {
         // Location Update Request
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
     }
 
-    // Stop Listening
+    /**
+     * Stop Listening for Location Update
+     * - Actual implementation (iOS)
+     */
     actual fun stopListening() {
         // Remove Location Update
         locationManager.stopUpdatingLocation()

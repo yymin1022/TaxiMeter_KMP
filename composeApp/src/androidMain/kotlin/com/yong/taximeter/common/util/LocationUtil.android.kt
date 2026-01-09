@@ -68,7 +68,10 @@ actual object LocationUtil: KoinComponent {
         }
     }
 
-    // Start Listening
+    /**
+     * Start Listening for Location Update
+     * - Actual implementation (Android)
+     */
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION])
     actual fun startListening() {
         // Location Request Data
@@ -85,7 +88,10 @@ actual object LocationUtil: KoinComponent {
         )
     }
 
-    // Stop Listening
+    /**
+     * Stop Listening for Location Update
+     * - Actual implementation (Android)
+     */
     actual fun stopListening() {
         // Remove Location Update
         fusedLocationClient.removeLocationUpdates(locationCallback)

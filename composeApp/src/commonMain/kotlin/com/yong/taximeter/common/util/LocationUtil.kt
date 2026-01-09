@@ -12,7 +12,15 @@ expect object LocationUtil {
     // Speed State
     val speed: StateFlow<Float>
 
-    // Start/Stop Listening
+    /**
+     * Start Listening for Location Update
+     * - Expected implementation (Android, iOS)
+     */
     fun startListening()
+
+    /**
+     * Stop Listening for Location Update
+     * - Expected implementation (Android, iOS)
+     */
     fun stopListening()
 }
